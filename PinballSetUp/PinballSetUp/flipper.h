@@ -18,7 +18,7 @@ public:
 	Vector2f getposition();
 	ConvexShape getShape();
 	float getRotation();
-
+	void rotateFlipper(bool);
 	void update();
 
 

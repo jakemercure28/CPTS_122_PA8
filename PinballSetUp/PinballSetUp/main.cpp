@@ -73,7 +73,28 @@ int main()
                 case sf::Event::Closed:
 					window.close();
 					break;
+		}
 
+		if (Keyboard::isKeyPressed(Keyboard::A))
+		{
+			//Rotate Left Flipper CCW until max rotation
+			leftFlipper->rotateFlipper(true);
+		}
+		else
+		{
+			//Rotate Left Flipper CW until static position
+			leftFlipper->rotateFlipper(false);
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::D))
+		{
+			//Rotate Right Flipper CW until max rotation
+			rightFlipper->rotateFlipper(true);
+		}
+		else
+		{
+			//Rotate Right Flipper CCW until static position
+			rightFlipper->rotateFlipper(false);
 		}
 
 		window.clear();

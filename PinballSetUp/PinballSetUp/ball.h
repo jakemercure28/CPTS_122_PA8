@@ -19,7 +19,7 @@ public:
 	Vector2f getposition();
 	CircleShape getShape();
 
-	float getVelocity();
+	Vector2f getVelocity();
 	void hitbottom();
 	void update();
 };
