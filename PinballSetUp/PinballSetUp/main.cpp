@@ -1,7 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "ball.h"
 #include "flipper.h"
+#include "launcher.h"
 #include <iostream>
+
 
 int main()
 {
@@ -9,16 +11,16 @@ int main()
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
 
-	sf::RenderWindow window(sf::VideoMode(700, 900), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
+	sf::RenderWindow window(sf::VideoMode(700, 900), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar, settings);
 
 	// Pinball
-	ball* pinball = new ball(625,770);
+	ball* pinball = new ball(625, 770);
 
 	//Flippers
 	flipper* leftFlipper = new flipper(190, 815, 90, false);
 	flipper* rightFlipper = new flipper(500, 815, 90, true);
 
-	
+
 	sf::RectangleShape rectangle(sf::Vector2f(10.f, 750.f));
 	rectangle.setFillColor(sf::Color::White);
 	rectangle.move(600, 175);
@@ -32,17 +34,9 @@ int main()
 	//to launch the ball, we need to make this move vertically with options for launch strength
 	//that correlate with ball speed
 
-	sf::ConvexShape launcher;
-	launcher.setPointCount(8);
-	launcher.setPoint(0, sf::Vector2f(625.f, 830.f));
-	launcher.setPoint(1, sf::Vector2f(685.f, 830.f));
-	launcher.setPoint(2, sf::Vector2f(685.f, 845.f));
-	launcher.setPoint(3, sf::Vector2f(665.f, 845.f));
-	launcher.setPoint(4, sf::Vector2f(665.f, 900.f));
-	launcher.setPoint(5, sf::Vector2f(645.f, 900.f));
-	launcher.setPoint(6, sf::Vector2f(645.f, 845.f));
-	launcher.setPoint(7, sf::Vector2f(625.f, 845.f));
-	launcher.setFillColor(sf::Color::Red);
+	//Launcher
+	launcher* Launcher = new launcher(625, 830);
+
 
 	sf::ConvexShape corner;
 	corner.setPointCount(3);
@@ -63,9 +57,22 @@ int main()
 	sf::RectangleShape right_bound(sf::Vector2f(160.f, 15.f));
 	right_bound.setPosition(610.f, 710.f);
 	right_bound.rotate(135.f);
-
+	int count_launch = 0;
 	while (window.isOpen())
 	{
+		//launcher moves downward if the down key is pressed
+		//it also needs to move up, but I haven't gotten that to work yet
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			while (count_launch == 0) {
+				count_launch++;
+				Launcher->launch(2);
+				//other speed options:
+				//Launcher->launch(5);
+				//Launcher->launch(10);
+			}
+
+		}
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -82,7 +89,7 @@ int main()
 		window.draw(rightFlipper->getShape());
 		window.draw(rectangle);
 		window.draw(left_rectangle);
-		window.draw(launcher);
+		window.draw(Launcher->getShape());
 		window.draw(corner);
 		window.draw(left_corner);
 		window.draw(left_bound);

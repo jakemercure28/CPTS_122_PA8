@@ -153,11 +153,13 @@
   <ItemGroup>
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="flipper.cpp" />
+    <ClCompile Include="launcher.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball.h" />
     <ClInclude Include="flipper.h" />
+    <ClInclude Include="launcher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
