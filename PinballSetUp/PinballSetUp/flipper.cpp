@@ -1,10 +1,10 @@
 #include "flipper.h"
 
-flipper::flipper(float initX, float initY, float initRot,bool direction)
+flipper::flipper(float initX, float initY, float initRot, bool direction)
 {
 	position.x = initX;
 	position.y = initY;
-	rotation = initRot;
+	rotation = 0;
 	rotDir = direction;
 
 	flipperShape.setPointCount(6);
@@ -30,5 +30,10 @@ ConvexShape flipper::getShape()
 
 float flipper::getRotation()
 {
-	return rotation;
+	return flipperShape.getRotation();
+}
+
+void flipper::rotateFlipper(bool upDown)
+{
+	flipperShape.rotate(upDown ^ rotDir ? -1 : 1);
 }
