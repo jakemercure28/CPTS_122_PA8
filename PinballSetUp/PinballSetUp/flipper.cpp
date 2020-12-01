@@ -33,7 +33,31 @@ float flipper::getRotation()
 	return flipperShape.getRotation();
 }
 
+void flipper::rotateUp()
+{
+	flipperShape.rotate(rotDir ? 1 : -1);
+	rotation++;
+}
+
+void flipper::rotateDown()
+{
+	flipperShape.rotate(rotDir ? -1 : 1);
+	rotation--;
+}
 void flipper::rotateFlipper(bool upDown)
 {
-	flipperShape.rotate(upDown ^ rotDir ? -1 : 1);
+	if (upDown)
+	{
+		if (rotation <= 30)
+		{
+			rotateUp();
+		}
+	}
+	else
+	{
+		if (rotation >= -30)
+		{
+			rotateDown();
+		}
+	}
 }
