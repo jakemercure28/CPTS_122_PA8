@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "ball.h"
 #include <iostream>
 
 int main()
@@ -10,14 +11,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(700, 900), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
 
 	// Pinball
-	sf::CircleShape ball(30.f);
-	ball.setPosition(625.f, 770.f);
-	ball.setFillColor(sf::Color::Blue);
-	
-	//I've added to test
-	sf::CircleShape triangle(30.f, 3);
-	triangle.setPosition(300.f, 200.f);
-	triangle.setFillColor(sf::Color::Green);
+	ball* pinball = new ball(625,770);
 
 
 	sf::RectangleShape rectangle(sf::Vector2f(10.f, 750.f));
@@ -106,8 +100,7 @@ int main()
 		}
 
 		window.clear();
-		window.draw(ball);
-		window.draw(triangle);
+		window.draw(pinball->getShape());
 		window.draw(rectangle);
 		window.draw(left_rectangle);
 		window.draw(launcher);
