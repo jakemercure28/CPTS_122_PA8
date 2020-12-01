@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "ball.h"
 #include "flipper.h"
+#include "launcher.h"
 #include <iostream>
 
 int main()
@@ -18,7 +19,9 @@ int main()
 	flipper* leftFlipper = new flipper(190, 815, 90, false);
 	flipper* rightFlipper = new flipper(500, 815, 90, true);
 
-	
+	//launcher
+	launcher* ballLauncher = new launcher(655, 830);
+
 	sf::RectangleShape rectangle(sf::Vector2f(10.f, 750.f));
 	rectangle.setFillColor(sf::Color::White);
 	rectangle.move(600, 175);
@@ -32,17 +35,6 @@ int main()
 	//to launch the ball, we need to make this move vertically with options for launch strength
 	//that correlate with ball speed
 
-	sf::ConvexShape launcher;
-	launcher.setPointCount(8);
-	launcher.setPoint(0, sf::Vector2f(625.f, 830.f));
-	launcher.setPoint(1, sf::Vector2f(685.f, 830.f));
-	launcher.setPoint(2, sf::Vector2f(685.f, 845.f));
-	launcher.setPoint(3, sf::Vector2f(665.f, 845.f));
-	launcher.setPoint(4, sf::Vector2f(665.f, 900.f));
-	launcher.setPoint(5, sf::Vector2f(645.f, 900.f));
-	launcher.setPoint(6, sf::Vector2f(645.f, 845.f));
-	launcher.setPoint(7, sf::Vector2f(625.f, 845.f));
-	launcher.setFillColor(sf::Color::Red);
 
 	sf::ConvexShape corner;
 	corner.setPointCount(3);
@@ -97,13 +89,20 @@ int main()
 			rightFlipper->rotateFlipper(false);
 		}
 
+		if (Keyboard::isKeyPressed(Keyboard::Space))
+			ballLauncher->pullBack();
+		else
+			ballLauncher->release();
+
+		ballLauncher->update();
 		window.clear();
 		window.draw(pinball->getShape());
 		window.draw(leftFlipper->getShape());
 		window.draw(rightFlipper->getShape());
+		window.draw(ballLauncher->getShape());
+
 		window.draw(rectangle);
 		window.draw(left_rectangle);
-		window.draw(launcher);
 		window.draw(corner);
 		window.draw(left_corner);
 		window.draw(left_bound);
