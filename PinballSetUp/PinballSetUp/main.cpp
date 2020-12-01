@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "ball.h"
+#include "flipper.h"
 #include <iostream>
 
 int main()
@@ -13,7 +14,11 @@ int main()
 	// Pinball
 	ball* pinball = new ball(625,770);
 
+	//Flippers
+	flipper* leftFlipper = new flipper(190, 815, 90, false);
+	flipper* rightFlipper = new flipper(500, 815, 90, true);
 
+	
 	sf::RectangleShape rectangle(sf::Vector2f(10.f, 750.f));
 	rectangle.setFillColor(sf::Color::White);
 	rectangle.move(600, 175);
@@ -51,34 +56,6 @@ int main()
 	left_corner.setPoint(1, sf::Vector2f(90.f, 60.f));
 	left_corner.setPoint(2, sf::Vector2f(150.f, 0.f));
 
-	// new left flipper
-	sf::CircleShape leftflipperBase;
-	leftflipperBase.setRadius(15);
-	leftflipperBase.setPosition(175.f, 800.f);
-
-	sf::ConvexShape leftflipperArm;
-	leftflipperArm.setPointCount(4);
-	leftflipperArm.setPoint(0, sf::Vector2f(190.f, 800.f));
-	leftflipperArm.setPoint(1, sf::Vector2f(305.f, 805.f));
-	leftflipperArm.setPoint(2, sf::Vector2f(305.f, 825.f));
-	leftflipperArm.setPoint(3, sf::Vector2f(190.f, 830.f));
-	sf::CircleShape leftflipperTip;
-	leftflipperTip.setRadius(10);
-	leftflipperTip.setPosition(295, 805);
-
-	// old left flipper
-	sf::ConvexShape left_flipper;
-	left_flipper.setPointCount(3);
-	left_flipper.setPoint(0, sf::Vector2f(190.f, 800.f));
-	left_flipper.setPoint(1, sf::Vector2f(305.f, 830.f));
-	left_flipper.setPoint(2, sf::Vector2f(190.f, 830.f));
-
-	sf::ConvexShape right_flipper;
-	right_flipper.setPointCount(3);
-	right_flipper.setPoint(0, sf::Vector2f(500.f, 800.f));
-	right_flipper.setPoint(1, sf::Vector2f(500.f, 830.f));
-	right_flipper.setPoint(2, sf::Vector2f(385.f, 830.f));
-
 	sf::RectangleShape left_bound(sf::Vector2f(160.f, 15.f));
 	left_bound.setPosition(90.f, 700.f);
 	left_bound.rotate(45.f);
@@ -101,17 +78,14 @@ int main()
 
 		window.clear();
 		window.draw(pinball->getShape());
+		window.draw(leftFlipper->getShape());
+		window.draw(rightFlipper->getShape());
 		window.draw(rectangle);
 		window.draw(left_rectangle);
 		window.draw(launcher);
 		window.draw(corner);
 		window.draw(left_corner);
-		window.draw(left_flipper);
-		//window.draw(leftflipperBase);
-		//window.draw(leftflipperArm);
-		//window.draw(leftflipperTip);
 		window.draw(left_bound);
-		window.draw(right_flipper);
 		window.draw(right_bound);
 		window.display();
 	}
