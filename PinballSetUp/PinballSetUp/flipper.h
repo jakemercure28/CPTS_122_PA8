@@ -19,6 +19,9 @@ public:
 	ConvexShape getShape();
 	float getRotation();
 
+	void rotateUp();
+	void rotateDown();
+	void rotateFlipper(bool);
 	void update();
 
 
