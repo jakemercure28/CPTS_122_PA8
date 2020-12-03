@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "ball.h"
 #include "flipper.h"
+#include "bumper.h"
 #include "launcher.h"
 #include "bumper.h"
 #include <iostream>
