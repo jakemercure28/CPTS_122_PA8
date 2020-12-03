@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "ball.h"
 #include "flipper.h"
+#include "bumper.h"
 #include <iostream>
 
 int main()
@@ -13,6 +14,9 @@ int main()
 
 	// Pinball
 	ball* pinball = new ball(625,770);
+
+	bumper* bumper1 = new bumper(400, 400);
+	bumper* bumper2 = new bumper(200, 200);
 
 	//Flippers
 	flipper* leftFlipper = new flipper(190, 815, 90, false);
@@ -64,6 +68,8 @@ int main()
 	right_bound.setPosition(610.f, 710.f);
 	right_bound.rotate(135.f);
 
+	
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -87,6 +93,10 @@ int main()
 		window.draw(left_corner);
 		window.draw(left_bound);
 		window.draw(right_bound);
+
+		window.draw(bumper1->getShape());
+		window.draw(bumper2->getShape());
+
 		window.display();
 	}
 

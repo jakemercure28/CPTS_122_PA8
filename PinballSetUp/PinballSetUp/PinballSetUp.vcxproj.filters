@@ -24,12 +24,18 @@
     <ClCompile Include="flipper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bumper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="flipper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bumper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
