@@ -18,7 +18,7 @@ public:
 	CircleShape getShape();
 	void ApplyGravity(Vector2f gravity);
 	Vector2f getVelocity();
-	void hitbottom();
+	void hitboundary(int width, int height);
 	void update();
 };
 

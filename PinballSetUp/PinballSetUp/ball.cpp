@@ -21,7 +21,8 @@ CircleShape ball::getShape()
 
 void ball::ApplyGravity(Vector2f gravity)
 {
-	Velocity = Velocity + gravity;
+	Velocity.x += gravity.x;
+	Velocity.y += gravity.y;
 }
 
 Vector2f ball::getVelocity()
@@ -29,14 +30,18 @@ Vector2f ball::getVelocity()
 	return Velocity;
 }
 
-void ball::hitbottom()
+void ball::hitboundary(int width,int height)
 {
+	if ((position.x) >= (width- 2*ballShape.getRadius()) || position.x <= 0)
+		Velocity.x *= -1.;
 
+	if (position.y >= (height-2 * ballShape.getRadius()) || position.y <= 0)
+		Velocity.y *= -1.;
 }
 
 void ball::update()
 {
-	ApplyGravity(Vector2f(0.f,-.01f));
+	ApplyGravity(Vector2f(0.f,.01f));
 	position = position + getVelocity();
 	ballShape.setPosition(position);
 }

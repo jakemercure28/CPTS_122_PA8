@@ -3,6 +3,10 @@
 #include "flipper.h"
 #include "launcher.h"
 #include <iostream>
+//#include "Pinball.h"
+
+#define WIDTH 700
+#define HEIGHT 900
 
 int main()
 {
@@ -10,7 +14,7 @@ int main()
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
 
-	sf::RenderWindow window(sf::VideoMode(700, 900), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
+	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
 
 	// Pinball
 	ball* pinball = new ball(625,770);
@@ -95,6 +99,7 @@ int main()
 			ballLauncher->release();
 
 		ballLauncher->update();
+		pinball->hitboundary(WIDTH, HEIGHT);
 		pinball->update();
 
 		window.clear();
