@@ -95,6 +95,8 @@ int main()
 			ballLauncher->release();
 
 		ballLauncher->update();
+		pinball->update();
+
 		window.clear();
 		window.draw(pinball->getShape());
 		window.draw(leftFlipper->getShape());
