@@ -160,6 +160,7 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
+    <ClInclude Include="pa8.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="OCR-A BT.ttf" />
