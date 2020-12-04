@@ -20,7 +20,8 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
 
 	// Pinball
-	ball* pinball = new ball(825, 770);
+	//ball* pinball = new ball(825, 770);
+	ball* pinball = new ball(600, 770);
 
 	bumper* bumper1 = new bumper(600, 400);
 	bumper* bumper2 = new bumper(400, 200);
@@ -147,7 +148,10 @@ int main()
 
 			ballLauncher->update();
 			pinball->hitboundary(WIDTH, HEIGHT);
+			pinball->collision(bumper1->getShape());
+			pinball->collision(bumper2->getShape());
 			pinball->update();
+			
 			window.clear();
 			window.draw(mouse_check);
 			window.draw(pinball->getShape());

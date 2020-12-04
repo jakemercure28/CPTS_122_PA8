@@ -20,6 +20,8 @@ public:
 	Vector2f getVelocity();
 	void hitboundary(int width, int height);
 	void update();
+	void collision(CircleShape shape);
+	void collision(ConvexShape shape);
 };
 
 #endif
