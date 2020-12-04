@@ -47,11 +47,11 @@ int launcher::moveLauncher(bool upDown)
 	else
 	{
 		if (pullback > 0) {
-			if (pullback <= 20)
+			if (pullback <= 30)
 				a = 1;
-			else if (pullback <= 32)
+			else if (pullback <= 55)
 				a = 2;
-			else if (pullback > 32)
+			else if (pullback > 55)
 				a = 3;
 
 			release();

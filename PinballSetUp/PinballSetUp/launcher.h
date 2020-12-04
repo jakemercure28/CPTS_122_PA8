@@ -1,7 +1,7 @@
 #ifndef LAUNCHER_H
 #define LAUNCHER_H
 
-#define MAXPULLBACK 50
+#define MAXPULLBACK 70
 #include <SFML/Graphics.hpp>
 
 using namespace sf;

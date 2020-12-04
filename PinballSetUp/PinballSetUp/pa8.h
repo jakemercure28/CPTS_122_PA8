@@ -150,13 +150,13 @@ void title_score_game_setup(Font* MyFont, sf::Text* title, Text* titleshadow, Te
 	score->setString("Score:");
 	score->setCharacterSize(50);
 	score->setFillColor(sf::Color::Red);
-	score->setPosition(45.f, 50.f);
+	score->setPosition(45.f, 10.f);
 	//shadow of score
 	scoreshadow->setFont(*MyFont);
 	scoreshadow->setString("Score:");
 	scoreshadow->setCharacterSize(50);
 	scoreshadow->setFillColor(sf::Color::Blue);
-	scoreshadow->setPosition(50.f, 55.f);
+	scoreshadow->setPosition(50.f, 15.f);
 }
 
 

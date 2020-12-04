@@ -120,12 +120,26 @@ void ball::collision(CircleShape shape)
 
 void ball::hitboundary(int width, int height)
 {
-	if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
-		Velocity.x *= -1.;
 
-	if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
-		Velocity.y *= -1.;
+		if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
+			Velocity.x *= -1.;
+
+		if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
+			Velocity.y *= -1.;
+	
 }
+
+//void ball::hitboundary2(int width, int height)
+//{
+//	if ((((position.x) < (800)) || ((position.x) > (820))) && ((position.y) > (100))) {
+//		if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
+//			Velocity.x *= -1.;
+//
+//		if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
+//			Velocity.y *= -1.;
+//	}
+//}
+
 
 void ball::update()
 {
@@ -186,3 +200,10 @@ float ball::distance(Vector2f point1, Vector2f point2)
 
 	return distance;
 }
+
+void ball::setVelocity(float xvel, float yvel)
+{
+	Velocity.x = xvel;
+	Velocity.y = yvel;
+}
+
