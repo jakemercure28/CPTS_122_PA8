@@ -23,6 +23,7 @@ public:
 	void update();
 	void collision(CircleShape shape);
 	void collision(ConvexShape shape);
+	void launch(int setting);
 	Vector2f rotatePoint(Vector2f point, float angle);
 	float distance(Vector2f point1, Vector2f point2);
 	bool linePoint(Vector2f lineP1, Vector2f lineP2, Vector2f point);
