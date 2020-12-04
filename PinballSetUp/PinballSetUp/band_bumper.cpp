@@ -16,8 +16,11 @@ band_bumper::band_bumper(float initX, float initY, float initRotation, bool acti
 
 	band_bumper_shape.move(position);
 
-
 	band_bumper_shape.rotate(initRotation);
+
+	band_bumper_shape.setFillColor(sf::Color::Black);
+	band_bumper_shape.setOutlineThickness(7);
+	band_bumper_shape.setOutlineColor(sf::Color::Yellow);
 
 }
 
