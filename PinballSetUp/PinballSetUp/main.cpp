@@ -20,8 +20,8 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
 
 	// Pinball
-	//ball* pinball = new ball(825, 770);
-	ball* pinball = new ball(600, 770);
+	ball* pinball = new ball(825, 770);
+	//ball* pinball = new ball(600, 770);
 
 	bumper* bumper1 = new bumper(600, 400);
 	bumper* bumper2 = new bumper(400, 200);
@@ -114,6 +114,7 @@ int main()
 
 	int user_choice = 0;
 	int count = 0;
+	int flag = 0;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -144,13 +145,23 @@ int main()
 			// Keyboard Actions
 			leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
 			rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
-			ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
+			int if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
+			if (if_launch) {
+				//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
+				//2 if the ball launches medium, and 3 if the ball launches fast
+				pinball->launch(if_launch);
+				pinball->update();
+				flag = 1;
+			}
+			if (flag == 1) {
+				pinball->update();
+			}
 
 			ballLauncher->update();
 			pinball->hitboundary(WIDTH, HEIGHT);
 			pinball->collision(bumper1->getShape());
 			pinball->collision(bumper2->getShape());
-			pinball->update();
+			
 			
 			window.clear();
 			window.draw(mouse_check);

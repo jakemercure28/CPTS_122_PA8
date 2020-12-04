@@ -79,3 +79,24 @@ void ball::update()
 	ballShape.setPosition(position);
 }
 
+void ball::launch(int setting)
+{
+
+	if (setting == 1) {
+		ApplyGravity(Vector2f(0.f, -.01f));
+		position = position + getVelocity();
+		ballShape.setPosition(position);
+
+	}
+	else if (setting == 2) {
+		ApplyGravity(Vector2f(0.f, -.02f));
+		position = position + getVelocity();
+		ballShape.setPosition(position);
+	}
+	else if (setting == 3) {
+		ApplyGravity(Vector2f(0.f, -.04f));
+		position = position + getVelocity();
+		ballShape.setPosition(position);
+	}
+}
+

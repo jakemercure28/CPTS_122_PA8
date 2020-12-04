@@ -22,6 +22,7 @@ public:
 	void update();
 	void collision(CircleShape shape);
 	void collision(ConvexShape shape);
+	void launch(int setting);
 };
 
 #endif
