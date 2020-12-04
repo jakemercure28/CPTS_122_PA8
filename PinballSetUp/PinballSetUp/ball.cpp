@@ -1,6 +1,7 @@
 #include "ball.h"
 #include <cmath>
 #include <iostream>
+#define REBOUND 1.00f
 ball::ball(float initX, float initY)
 {
 	position.x = initX;
@@ -55,7 +56,7 @@ void ball::collision(ConvexShape shape)
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
 			Velocity = Velocity - int1;
-			break;
+			return;
 		}
 	}
 
@@ -78,14 +79,17 @@ void ball::collision(ConvexShape shape)
 
 		Vector2f closestPoint = Vector2f((linePt1.x + (dotp * (linePt2.x - linePt1.x))), (linePt1.y + (dotp * (linePt2.y - linePt1.y))));
 		if (!linePoint(linePt1, linePt2, closestPoint))
+		{
 			continue;
+		}
 		float trueDistance = distance(originA, closestPoint);
 		if (trueDistance <= ballShape.getRadius())
 		{
 			Vector2f normal = Vector2f((originA.x - closestPoint.x) / trueDistance, (originA.y - closestPoint.y) / trueDistance);
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
-			Velocity = Velocity - int1;
+			Velocity = REBOUND *(Velocity - int1);
+			return;
 		}
 	}
 
@@ -114,19 +118,17 @@ void ball::collision(CircleShape shape)
 
 		float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 		Vector2f  int1 = (2 * ddotn) * normal;
-		Velocity = Velocity - int1;
+     		Velocity = REBOUND * (Velocity - int1);
 	}
 }
 
 void ball::hitboundary(int width, int height)
 {
+	if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
+		Velocity.x *= -REBOUND;
 
-		if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
-			Velocity.x *= -1.;
-
-		if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
-			Velocity.y *= -1.;
-	
+	if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
+		Velocity.y *= -REBOUND;
 }
 
 //void ball::hitboundary2(int width, int height)

@@ -5,6 +5,7 @@
 #include "launcher.h"
 #include "bumper.h"
 #include "band_bumper.h"
+#include "ConvexRect.h"
 #include <iostream>
 #include "pa8.h"
 
@@ -39,16 +40,10 @@ int main()
 	//launcher
 	launcher* ballLauncher = new launcher(855, 830);
 
-	sf::RectangleShape rectangle(sf::Vector2f(10.f, 850.f));
-	rectangle.setFillColor(sf::Color::White);
-	rectangle.move(800, 100);
-	//rectangle.setPosition(600.f, 175.f);
-
-	sf::RectangleShape left_rectangle(sf::Vector2f(10.f, 715.f));
-	left_rectangle.move(280, 0);
-	//left_rectangle.setPosition(80.f, 0.f);
-	left_rectangle.setFillColor(sf::Color::White);
-
+	ConvexRect* right_rectangle = new ConvexRect(800, 175, 10, 750);
+	ConvexRect* left_rectangle = new ConvexRect(280, 0, 10, 715);
+	ConvexRect* left_bound = new ConvexRect(290, 700, 160, 15,45);
+	ConvexRect* right_bound = new ConvexRect(810, 710, 160, 15,135);
 	//to launch the ball, we need to make this move vertically with options for launch strength
 	//that correlate with ball speed
 
@@ -79,28 +74,6 @@ int main()
 	left_corner.setPoint(1, sf::Vector2f(290.f, 60.f));
 	left_corner.setPoint(2, sf::Vector2f(350.f, 0.f));
 
-	sf::RectangleShape left_bound(sf::Vector2f(160.f, 15.f));
-	left_bound.setPosition(290.f, 700.f);
-	left_bound.rotate(45.f);
-
-	sf::RectangleShape right_bound(sf::Vector2f(160.f, 15.f));
-	right_bound.setPosition(810.f, 710.f);
-	right_bound.rotate(135.f);
-
-	sf::ConvexShape right_triangle;
-	right_triangle.setPointCount(3);
-	right_triangle.setPoint(0, sf::Vector2f(810.f, 100.f));
-	right_triangle.setPoint(1, sf::Vector2f(730.f, 150.f));
-	right_triangle.setPoint(2, sf::Vector2f(810.f, 200.f));
-	right_triangle.setFillColor(sf::Color::White);
-
-	sf::ConvexShape right_bot_corner;
-	left_bot_corner.setPointCount(3);
-	left_bot_corner.setPoint(0, sf::Vector2f(810.f, 710.f));
-	left_bot_corner.setPoint(1, sf::Vector2f(810.f, 813.f));
-	left_bot_corner.setPoint(2, sf::Vector2f(696.8f, 813.14f));
-	left_bot_corner.setFillColor(sf::Color::Red);
-
 	//adding in the text
 	sf::Font MyFont;
 	if (!MyFont.loadFromFile("OCR-A BT.ttf"))
@@ -119,6 +92,20 @@ int main()
 	sf::RectangleShape score_box2(sf::Vector2f(170.f, 60.f));
 	score_box2.setPosition(60.f, 80.f);
 	score_box2.setFillColor(sf::Color::Blue);
+
+		sf::ConvexShape right_triangle;
+	right_triangle.setPointCount(3);
+	right_triangle.setPoint(0, sf::Vector2f(810.f, 100.f));
+	right_triangle.setPoint(1, sf::Vector2f(730.f, 150.f));
+	right_triangle.setPoint(2, sf::Vector2f(810.f, 200.f));
+	right_triangle.setFillColor(sf::Color::White);
+
+	sf::ConvexShape right_bot_corner;
+	left_bot_corner.setPointCount(3);
+	left_bot_corner.setPoint(0, sf::Vector2f(810.f, 710.f));
+	left_bot_corner.setPoint(1, sf::Vector2f(810.f, 813.f));
+	left_bot_corner.setPoint(2, sf::Vector2f(696.8f, 813.14f));
+	left_bot_corner.setFillColor(sf::Color::Red);
 
 	//menu boxes
 	sf::RectangleShape outerbox(sf::Vector2f(450.f, 750.f));
