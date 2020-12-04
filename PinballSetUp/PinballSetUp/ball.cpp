@@ -14,6 +14,7 @@ Vector2f ball::getposition()
 	return position;
 }
 
+
 CircleShape ball::getShape()
 {
 	return ballShape;
@@ -81,20 +82,24 @@ void ball::update()
 
 void ball::launch(int setting)
 {
+	Velocity.x = (0.f);
+	Velocity.y = (0.f);
 
 	if (setting == 1) {
+		Velocity.y -= 1.f;
 		ApplyGravity(Vector2f(0.f, -.01f));
 		position = position + getVelocity();
 		ballShape.setPosition(position);
-
 	}
 	else if (setting == 2) {
-		ApplyGravity(Vector2f(0.f, -.02f));
+		Velocity.y = -5.f;
+		ApplyGravity(Vector2f(0.f, -.01f));
 		position = position + getVelocity();
 		ballShape.setPosition(position);
 	}
 	else if (setting == 3) {
-		ApplyGravity(Vector2f(0.f, -.04f));
+		Velocity.y -= 20.f;
+		ApplyGravity(Vector2f(0.f, -.01f));
 		position = position + getVelocity();
 		ballShape.setPosition(position);
 	}

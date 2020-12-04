@@ -84,11 +84,11 @@ int main()
 
 
 	sf::RectangleShape score_box1(sf::Vector2f(170.f, 60.f));
-	score_box1.setPosition(55.f, 115.f);
+	score_box1.setPosition(55.f, 75.f);
 	score_box1.setFillColor(sf::Color::Red);
 
 	sf::RectangleShape score_box2(sf::Vector2f(170.f, 60.f));
-	score_box2.setPosition(60.f, 120.f);
+	score_box2.setPosition(60.f, 80.f);
 	score_box2.setFillColor(sf::Color::Blue);
 
 	//menu boxes
@@ -115,6 +115,30 @@ int main()
 	int user_choice = 0;
 	int count = 0;
 	int flag = 0;
+
+	sf::Text launch_setting;
+	launch_setting.setFont(MyFont);
+	launch_setting.setString("Launch Speed: ");
+	launch_setting.setCharacterSize(25);
+	launch_setting.setFillColor(sf::Color::Red);
+	launch_setting.setPosition(20.f, 650.f);
+
+	sf::Text launches_left;
+	launches_left.setFont(MyFont);
+	launches_left.setString("Launches Left: ");
+	launches_left.setCharacterSize(25);
+	launches_left.setFillColor(sf::Color::Red);
+	launches_left.setPosition(20.f, 580.f);
+
+	sf::Text game_rules;
+	game_rules.setFont(MyFont);
+	game_rules.setString("Game Rules\nPress the spacebar to \nrelease the ball. There \nare three release \nsettings: slow, medium, \nfast, and super fast!\nUse the A and D keys to\ncontrol the flippers and \nkeep the ball from \nfalling into the gap.\n\nThe game ends when\nthe ball falls into the \ngap three times! Your \nscore depends on the\n number of collisions\n between the ball and \nthe bumpers!");
+	game_rules.setCharacterSize(18);
+	game_rules.setFillColor(sf::Color::Red);
+	game_rules.setPosition(20.f, 160.f);
+	int launches = 3;
+	int score_count = 0;
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -145,12 +169,14 @@ int main()
 			// Keyboard Actions
 			leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
 			rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
-			int if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
-			if (if_launch) {
+			int if_launch = 0;
+			if(flag==0)
+			if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
+			if ((if_launch)&&(ballLauncher->getposition().y==830)) {
 				//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
 				//2 if the ball launches medium, and 3 if the ball launches fast
 				pinball->launch(if_launch);
-				pinball->update();
+				//pinball->update();
 				flag = 1;
 			}
 			if (flag == 1) {
@@ -162,9 +188,13 @@ int main()
 			pinball->collision(bumper1->getShape());
 			pinball->collision(bumper2->getShape());
 			
+			if ((pinball->getposition()).y < 0) {
+				launches--;
+				ball* pinball = new ball(825, 770);
+				int flag = 0;
+			}
 			
 			window.clear();
-			window.draw(mouse_check);
 			window.draw(pinball->getShape());
 			window.draw(leftFlipper->getShape());
 			window.draw(rightFlipper->getShape());
@@ -182,6 +212,9 @@ int main()
 			window.draw(score);
 			window.draw(score_box2);
 			window.draw(score_box1);
+			window.draw(launch_setting);
+			window.draw(launches_left);
+			window.draw(game_rules);
 			window.draw(bumper1->getShape());
 			window.draw(bumper2->getShape());
             window.draw(band_bumper1->getShape());
