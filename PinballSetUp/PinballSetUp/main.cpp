@@ -146,6 +146,8 @@ int main()
 			ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
 
 			ballLauncher->update();
+			pinball->hitboundary(WIDTH, HEIGHT);
+			pinball->update();
 			window.clear();
 			window.draw(mouse_check);
 			window.draw(pinball->getShape());

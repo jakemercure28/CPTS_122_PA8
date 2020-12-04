@@ -41,7 +41,7 @@ void ball::hitboundary(int width,int height)
 
 void ball::update()
 {
-	ApplyGravity(Vector2f(0.f,.01f));
+	ApplyGravity(Vector2f(0.f,-.01f));
 	position = position + getVelocity();
 	ballShape.setPosition(position);
 }
