@@ -11,12 +11,13 @@ private:
 	CircleShape bumper_shape;
 
 public:
-
+	// constructor
 	bumper(float initX, float initY);
+
+	
 	Vector2f getposition();
 	CircleShape getShape();
 
-	float getVelocity();
 	void ball_contact();
 	void update();
 };
