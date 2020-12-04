@@ -49,15 +49,11 @@ void flipper::rotateFlipper(bool upDown)
 	if (upDown)
 	{
 		if (rotation <= 30)
-		{
 			rotateUp();
-		}
 	}
 	else
 	{
 		if (rotation >= -30)
-		{
 			rotateDown();
-		}
 	}
 }

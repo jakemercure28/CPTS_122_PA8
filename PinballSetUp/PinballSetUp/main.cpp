@@ -110,34 +110,10 @@ int main()
 					break;
 		}
 
-		//first, display the menu before nay option is chosen
-		if (user_choice == 0) {
-			window.clear();
-
-			draw_menu(&window, outerbox, test1, start_playable, test2, test3, test4, test5, exit);
-			draw_menu2(&window, manu_title, startplayable, testcase1, testcase2, testcase3, testcase4, testcase5, exitText);
-
-			window.display();
-		}
-		if (count == 0) {
-			if (Mouse::isButtonPressed(sf::Mouse::Left))
-			{
-				Vector2i mouse_pos = Mouse::getPosition(window);
-				user_choice = check_mouse_pos(mouse_pos);
-			}
-		}
-		if ((user_choice == 1) || (user_choice == 2) || (user_choice == 3) || (user_choice == 4) || (user_choice == 5) || (user_choice == 6)) {
-			count++;
-			if (Keyboard::isKeyPressed(Keyboard::A))
-			{
-				//Rotate Left Flipper CCW until max rotation
-				leftFlipper->rotateFlipper(true);
-			}
-			else
-			{
-				//Rotate Left Flipper CW until static position
-				leftFlipper->rotateFlipper(false);
-			}
+		// Keyboard Actions
+		leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
+		rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+		ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
 
 			if (Keyboard::isKeyPressed(Keyboard::D))
 			{

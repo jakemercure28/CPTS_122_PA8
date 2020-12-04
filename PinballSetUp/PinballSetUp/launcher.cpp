@@ -26,19 +26,27 @@ ConvexShape launcher::getShape()
 
 void launcher::pullBack()
 {
-	if (pullback <= MAXPULLBACK)
-	{
 		position.y += 1;
 		pullback++;
-	}
 }
 
 void launcher::release()
 {
-	if (pullback > 0)
-	{
 		position.y -= 1;
 		pullback--;
+}
+
+void launcher::moveLauncher(bool upDown)
+{
+	if (upDown)
+	{
+		if (pullback <= MAXPULLBACK)
+			pullBack();
+	}
+	else
+	{
+		if (pullback > 0)
+			release();
 	}
 }
 

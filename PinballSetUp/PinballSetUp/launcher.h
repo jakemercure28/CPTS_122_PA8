@@ -16,7 +16,7 @@ public:
 	launcher(float initX, float initY);
 	Vector2f getposition();
 	ConvexShape getShape();
-
+	void moveLauncher(bool);
 	void pullBack();
 	void release();
 	void update();
