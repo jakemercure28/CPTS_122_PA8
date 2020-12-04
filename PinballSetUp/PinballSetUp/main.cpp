@@ -4,6 +4,7 @@
 #include "bumper.h"
 #include "launcher.h"
 #include "bumper.h"
+#include "band_bumper.h"
 #include <iostream>
 #include "pa8.h"
 
@@ -20,6 +21,11 @@ int main()
 
 	bumper* bumper1 = new bumper(400, 400);
 	bumper* bumper2 = new bumper(200, 200);
+
+	band_bumper* band_bumper1 = new band_bumper(170, 670, 45, false);
+	band_bumper* band_bumper2 = new band_bumper(500, 660, 135, false);
+
+	
 
 	//Flippers
 	flipper* leftFlipper = new flipper(390, 815, 90, false);
@@ -158,6 +164,8 @@ int main()
 			window.draw(score_box1);
 			window.draw(bumper1->getShape());
 			window.draw(bumper2->getShape());
+            window.draw(band_bumper1->getShape());
+		    window.draw(band_bumper2->getShape());
 			window.display();
 			//count = 1;
 
@@ -165,6 +173,7 @@ int main()
 		if (user_choice == 7) {
 			window.close();
 		}
+		
 	}
 
 	return 0;

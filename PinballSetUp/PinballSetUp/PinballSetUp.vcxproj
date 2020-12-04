@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ball.cpp" />
+    <ClCompile Include="band_bumper.cpp" />
     <ClCompile Include="bumper.cpp" />
     <ClCompile Include="flipper.cpp" />
     <ClCompile Include="launcher.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball.h" />
+    <ClInclude Include="band_bumper.h" />
     <ClInclude Include="bumper.h" />
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
