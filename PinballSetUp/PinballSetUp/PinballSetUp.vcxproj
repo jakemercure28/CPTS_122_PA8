@@ -152,12 +152,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ball.cpp" />
+    <ClCompile Include="bumper.cpp" />
     <ClCompile Include="flipper.cpp" />
     <ClCompile Include="launcher.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball.h" />
+    <ClInclude Include="bumper.h" />
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
     <ClInclude Include="pa8.h" />

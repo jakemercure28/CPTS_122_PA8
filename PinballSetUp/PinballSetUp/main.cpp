@@ -1,7 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "ball.h"
 #include "flipper.h"
+#include "bumper.h"
 #include "launcher.h"
+#include "bumper.h"
 #include <iostream>
 #include "pa8.h"
 
@@ -15,6 +17,9 @@ int main()
 
 	// Pinball
 	ball* pinball = new ball(825, 770);
+
+	bumper* bumper1 = new bumper(400, 400);
+	bumper* bumper2 = new bumper(200, 200);
 
 	//Flippers
 	flipper* leftFlipper = new flipper(390, 815, 90, false);
@@ -66,7 +71,7 @@ int main()
 
 	sf::Text title; Text titleshadow; Text score; Text scoreshadow;
 	title_score_game_setup(&MyFont, &title, &titleshadow, &score, &scoreshadow);
-	
+
 
 	sf::RectangleShape score_box1(sf::Vector2f(170.f, 60.f));
 	score_box1.setPosition(55.f, 115.f);
@@ -89,7 +94,7 @@ int main()
 	//text boxes for menu
 	sf::Text manu_title; Text created_by; Text startplayable; Text testcase1; Text testcase2; Text testcase3; Text testcase4; Text testcase5; Text exitText;
 	//text setting
-	
+
 
 	sf::RectangleShape mouse_check(sf::Vector2f(10.f, 10.f));
 
@@ -109,27 +114,27 @@ int main()
 					window.close();
 					break;
 		}
+		if (user_choice == 0) {
+			window.clear();
 
-		// Keyboard Actions
-		leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
-		rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
-		ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
+			draw_menu(&window, outerbox, test1, start_playable, test2, test3, test4, test5, exit);
+			draw_menu2(&window, manu_title, startplayable, testcase1, testcase2, testcase3, testcase4, testcase5, exitText);
 
-			if (Keyboard::isKeyPressed(Keyboard::D))
+			window.display();
+		}
+		if (count == 0) {
+			if (Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				//Rotate Right Flipper CW until max rotation
-				rightFlipper->rotateFlipper(true);
+				Vector2i mouse_pos = Mouse::getPosition(window);
+				user_choice = check_mouse_pos(mouse_pos);
 			}
-			else
-			{
-				//Rotate Right Flipper CCW until static position
-				rightFlipper->rotateFlipper(false);
-			}
-
-			if (Keyboard::isKeyPressed(Keyboard::Space))
-				ballLauncher->pullBack();
-			else
-				ballLauncher->release();
+		}
+		if ((user_choice == 1) || (user_choice == 2) || (user_choice == 3) || (user_choice == 4) || (user_choice == 5) || (user_choice == 6))
+		{
+			// Keyboard Actions
+			leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
+			rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+			ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
 
 			ballLauncher->update();
 			window.clear();
@@ -151,15 +156,15 @@ int main()
 			window.draw(score);
 			window.draw(score_box2);
 			window.draw(score_box1);
+			window.draw(bumper1->getShape());
+			window.draw(bumper2->getShape());
 			window.display();
 			//count = 1;
-		}
 
+		}
 		if (user_choice == 7) {
 			window.close();
 		}
-
-
 	}
 
 	return 0;
