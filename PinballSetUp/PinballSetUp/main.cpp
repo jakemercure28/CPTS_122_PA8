@@ -8,13 +8,16 @@
 #include <iostream>
 #include "pa8.h"
 
+#define WIDTH 900
+#define HEIGHT 900
+
 int main()
 {
 	sf::ContextSettings settings;
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
 
-	sf::RenderWindow window(sf::VideoMode(900, 900), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar, settings);
+	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
 
 	// Pinball
 	ball* pinball = new ball(825, 770);

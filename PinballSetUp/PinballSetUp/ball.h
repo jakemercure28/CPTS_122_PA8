@@ -9,18 +9,16 @@ class ball
 private:
 	Vector2f position;
 	CircleShape ballShape;
-
-	float xVelocity = 0;
-	float yVelocity = 0;
+	Vector2f Velocity;
 
 public:
 
 	ball(float initX, float initY);
 	Vector2f getposition();
 	CircleShape getShape();
-
+	void ApplyGravity(Vector2f gravity);
 	Vector2f getVelocity();
-	void hitbottom();
+	void hitboundary(int width, int height);
 	void update();
 };
 
