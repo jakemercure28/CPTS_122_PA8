@@ -22,11 +22,11 @@ int main()
 	// Pinball
 	ball* pinball = new ball(825, 770);
 
-	bumper* bumper1 = new bumper(400, 400);
-	bumper* bumper2 = new bumper(200, 200);
+	bumper* bumper1 = new bumper(600, 400);
+	bumper* bumper2 = new bumper(400, 200);
 
-	band_bumper* band_bumper1 = new band_bumper(170, 670, 45, false);
-	band_bumper* band_bumper2 = new band_bumper(500, 660, 135, false);
+	band_bumper* band_bumper1 = new band_bumper(370, 670, 45, false);
+	band_bumper* band_bumper2 = new band_bumper(700, 660, 135, false);
 
 	
 
@@ -41,7 +41,7 @@ int main()
 	rectangle.setFillColor(sf::Color::White);
 	rectangle.move(800, 175);
 	//rectangle.setPosition(600.f, 175.f);
-
+	
 	sf::RectangleShape left_rectangle(sf::Vector2f(10.f, 715.f));
 	left_rectangle.move(280, 0);
 	//left_rectangle.setPosition(80.f, 0.f);
