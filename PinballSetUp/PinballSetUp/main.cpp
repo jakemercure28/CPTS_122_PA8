@@ -17,11 +17,11 @@ int main()
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
 
-	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar,settings);
+	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar, settings);
 
 	// Pinball
 	//ball* pinball = new ball(825, 770);
-	ball* pinball = new ball(600, 770);
+	ball* pinball = new ball(600, 100);
 
 	bumper* bumper1 = new bumper(600, 400);
 	bumper* bumper2 = new bumper(400, 200);
@@ -29,7 +29,7 @@ int main()
 	band_bumper* band_bumper1 = new band_bumper(370, 670, 45, false);
 	band_bumper* band_bumper2 = new band_bumper(700, 660, 135, false);
 
-	
+
 
 	//Flippers
 	flipper* leftFlipper = new flipper(390, 815, 90, false);
@@ -42,7 +42,7 @@ int main()
 	rectangle.setFillColor(sf::Color::White);
 	rectangle.move(800, 175);
 	//rectangle.setPosition(600.f, 175.f);
-	
+
 	sf::RectangleShape left_rectangle(sf::Vector2f(10.f, 715.f));
 	left_rectangle.move(280, 0);
 	//left_rectangle.setPosition(80.f, 0.f);
@@ -150,8 +150,15 @@ int main()
 			pinball->hitboundary(WIDTH, HEIGHT);
 			pinball->collision(bumper1->getShape());
 			pinball->collision(bumper2->getShape());
+			pinball->collision(corner);
+			pinball->collision(left_corner);
+			pinball->collision(band_bumper1->getShape());
+			pinball->collision(band_bumper2->getShape());
+			pinball->collision(leftFlipper->getShape());
+			pinball->collision(rightFlipper->getShape());
+			pinball->collision(ballLauncher->getShape());
 			pinball->update();
-			
+
 			window.clear();
 			window.draw(mouse_check);
 			window.draw(pinball->getShape());
@@ -173,8 +180,8 @@ int main()
 			window.draw(score_box1);
 			window.draw(bumper1->getShape());
 			window.draw(bumper2->getShape());
-            window.draw(band_bumper1->getShape());
-		    window.draw(band_bumper2->getShape());
+			window.draw(band_bumper1->getShape());
+			window.draw(band_bumper2->getShape());
 			window.display();
 			//count = 1;
 
@@ -182,7 +189,7 @@ int main()
 		if (user_choice == 7) {
 			window.close();
 		}
-		
+
 	}
 
 	return 0;
