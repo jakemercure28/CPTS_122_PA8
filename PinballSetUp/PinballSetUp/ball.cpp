@@ -38,7 +38,7 @@ Vector2f ball::getVelocity()
 	return Velocity;
 }
 
-void ball::collision(ConvexShape shape)
+bool ball::collision(ConvexShape shape)
 {
 	Vector2f originA = getOrigin();
 
@@ -56,7 +56,7 @@ void ball::collision(ConvexShape shape)
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
 			Velocity = Velocity - int1;
-			return;
+			return true;;
 		}
 	}
 
@@ -89,13 +89,13 @@ void ball::collision(ConvexShape shape)
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
 			Velocity = REBOUND *(Velocity - int1);
-			return;
+			return true;
 		}
 	}
-
+	return false;
 }
 
-void ball::collision(CircleShape shape)
+bool ball::collision(CircleShape shape)
 {
 
 	Vector2f originA = getOrigin();
@@ -119,7 +119,9 @@ void ball::collision(CircleShape shape)
 		float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 		Vector2f  int1 = (2 * ddotn) * normal;
      		Velocity = REBOUND * (Velocity - int1);
+			return true;
 	}
+	return false;
 }
 
 void ball::hitboundary(int width, int height)

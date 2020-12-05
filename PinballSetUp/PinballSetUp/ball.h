@@ -21,8 +21,8 @@ public:
 	Vector2f getOrigin();
 	void hitboundary(int width, int height);
 	void update();
-	void collision(CircleShape shape);
-	void collision(ConvexShape shape);
+	bool collision(CircleShape shape);
+	bool collision(ConvexShape shape);
 	void launch(int setting);
 	Vector2f rotatePoint(Vector2f point, float angle);
 	float distance(Vector2f point1, Vector2f point2);

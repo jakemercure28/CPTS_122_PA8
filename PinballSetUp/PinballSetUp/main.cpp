@@ -44,8 +44,7 @@ int main()
 	ConvexRect* left_rectangle = new ConvexRect(280, 0, 10, 715);
 	ConvexRect* left_bound = new ConvexRect(290, 700, 160, 15,45);
 	ConvexRect* right_bound = new ConvexRect(810, 710, 160, 15,135);
-	//to launch the ball, we need to make this move vertically with options for launch strength
-	//that correlate with ball speed
+	ConvexRect* line_that_blocks_the_ball_from_the_launcher = new ConvexRect(800, 0, 10, 250);
 
 
 	sf::ConvexShape corner;
@@ -136,15 +135,15 @@ int main()
 	launch_setting.setFont(MyFont);					setting_display.setFont(MyFont);
 	launch_setting.setString("Launch Speed: ");
 	launch_setting.setCharacterSize(25);			setting_display.setCharacterSize(25);
-	launch_setting.setFillColor(sf::Color::Red);	 setting_display.setFillColor(sf::Color::White);
+	launch_setting.setFillColor(sf::Color::Red);	setting_display.setFillColor(sf::Color::White);
 	launch_setting.setPosition(20.f, 650.f);		setting_display.setPosition(50.f, 680.f);
 
-	sf::Text launches_left;						Text launches_display;
-	launches_left.setFont(MyFont);				launches_display.setFont(MyFont);
+	sf::Text launches_left;							Text launches_display;
+	launches_left.setFont(MyFont);					launches_display.setFont(MyFont);
 	launches_left.setString("Launches Left: ");
-	launches_left.setCharacterSize(25);			launches_display.setCharacterSize(45);
-	launches_left.setFillColor(sf::Color::Red); launches_display.setFillColor(sf::Color::White);
-	launches_left.setPosition(20.f, 580.f);		launches_display.setPosition(240.f, 550.f);
+	launches_left.setCharacterSize(25);				launches_display.setCharacterSize(45);
+	launches_left.setFillColor(sf::Color::Red);		launches_display.setFillColor(sf::Color::White);
+	launches_left.setPosition(20.f, 580.f);			launches_display.setPosition(240.f, 550.f);
 
 	sf::Text game_rules;
 	game_rules.setFont(MyFont);
@@ -154,6 +153,20 @@ int main()
 	game_rules.setPosition(20.f, 160.f);
 	int launches = 3;
 	int score_count = 0;
+	int restart = 0;
+	int if_launched = 0;
+
+	sf::Text test_case_description;
+	test_case_description.setFont(MyFont);
+	test_case_description.setCharacterSize(18);
+	test_case_description.setFillColor(sf::Color::White);
+	test_case_description.setPosition(20.f, 900.f);
+
+	sf::Text score_counter;
+	score_counter.setFont(MyFont);
+	score_counter.setCharacterSize(50);
+	score_counter.setFillColor(sf::Color::White);
+	score_counter.setPosition(80.f, 70.f);
 
 	while (window.isOpen())
 	{
@@ -175,6 +188,7 @@ int main()
 		}
 
 		if (count == 0) {
+			restart = 0;
 			if (Mouse::isButtonPressed(sf::Mouse::Left))
 			{
 				Vector2i mouse_pos = Mouse::getPosition(window);
@@ -183,18 +197,20 @@ int main()
 			}
 		}
 
-		if ((user_choice == 1) || (user_choice == 2) || (user_choice == 3) || (user_choice == 4) || (user_choice == 5) || (user_choice == 6))
+		if ((user_choice == 1))
 		{
+			line_that_blocks_the_ball_from_the_launcher = new ConvexRect(800, 0, 10, 180);
+			score_count = 0;
 			while (launches > 0) {
 				//determine number of launches left to display
-				if (launches == 1) 
+				if (launches == 1)
+					launches_display.setString("0");
+
+				else if (launches == 2)
 					launches_display.setString("1");
 
-				else if (launches == 2) 
-					launches_display.setString("2");
-
 				else if (launches == 3)
-					launches_display.setString("3");
+					launches_display.setString("2");
 
 				// Keyboard Actions
 				leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
@@ -205,7 +221,7 @@ int main()
 					if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
 
 				if ((if_launch) && (ballLauncher->getposition().y == 830)) {
-					
+
 					//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
 					//2 if the ball launches medium, and 3 if the ball launches fast
 					if (if_launch == 1) {
@@ -217,7 +233,7 @@ int main()
 						setting_display.setString("Medium");
 					}
 					else if (if_launch == 3) {
-						pinball->setVelocity(0.0, -10.0);
+						pinball->setVelocity(0.0, -8.0);
 						setting_display.setString("Fast");
 					}
 
@@ -227,27 +243,50 @@ int main()
 				ballLauncher->update();
 				//pinball->update();
 				if (flag == 1) {
+
+					if ((if_launched == 0) && (pinball->getposition().x < 700)) {
+						if_launched = 1;
+					}
+
 					pinball->hitboundary(WIDTH, HEIGHT);
 					//pinball->hitboundary2(290, HEIGHT);
 					//pinball->hitboundary2(810, HEIGHT);
-					pinball->collision(bumper1->getShape());
-					pinball->collision(bumper2->getShape());
+					if (pinball->collision(bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
 					pinball->collision(corner);
 					pinball->collision(left_corner);
 					pinball->collision(left_triangle);
 					pinball->collision(left_bot_corner);
 					//pinball->collision(right_triangle);
 					pinball->collision(right_bot_corner);
-					pinball->collision(band_bumper1->getShape());
-					pinball->collision(band_bumper2->getShape());
+					
+					if(pinball->collision(band_bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(band_bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+
 					pinball->collision(leftFlipper->getShape());
+
 					pinball->collision(rightFlipper->getShape());
+
 					pinball->collision(ballLauncher->getShape());
+					pinball->collision(right_rectangle->getShape());
+					pinball->collision(left_rectangle->getShape());
+					pinball->collision(right_bound->getShape());
+					pinball->collision(left_bound->getShape());
+					if (if_launched) {
+						pinball->collision(line_that_blocks_the_ball_from_the_launcher->getShape());
+					}
 					pinball->update();
+
+					
 
 					if ((pinball->getposition().y) > 900) {
 						launches--;
 						pinball = new ball(825, 770);
+						if_launched = 0;
 						flag = 0;
 					}
 
@@ -258,17 +297,16 @@ int main()
 				window.draw(leftFlipper->getShape());
 				window.draw(rightFlipper->getShape());
 				window.draw(ballLauncher->getShape());
+				if(if_launched)
+					window.draw(line_that_blocks_the_ball_from_the_launcher->getShape());
 
-				window.draw(rectangle);
-				window.draw(left_rectangle);
+				window.draw(right_rectangle->getShape());
+				window.draw(left_rectangle->getShape());
 				window.draw(corner);
 				window.draw(left_corner);
-				window.draw(left_bot_corner);
-				window.draw(left_bound);
+				window.draw(left_bound->getShape());
 				window.draw(left_triangle);
-				//window.draw(right_triangle);
-				window.draw(right_bot_corner);
-				window.draw(right_bound);
+				window.draw(right_bound->getShape());
 				window.draw(titleshadow);
 				window.draw(scoreshadow);
 				window.draw(title);
@@ -284,26 +322,492 @@ int main()
 				window.draw(launch_setting);
 				window.draw(launches_display);
 				window.draw(setting_display);
+				window.draw(score_counter);
 				window.display();
 				//count = 1;
 			}
 			if (launches == 0) {
 				window.clear();
 				launches_display.setCharacterSize(20);
-				launches_display.setString("You have run out of launches!\nClick anywhere to go back to main menu.");
+				launches_display.setString("You have run out of launches!\nPress R to go back to main menu.\nPress the ESC to quit the game.");
 
 				window.draw(launches_display);
 				window.display();
-				if (Mouse::isButtonPressed(sf::Mouse::Left))
-				{
-					user_choice = 0;
-					count = 0;
-					window.clear();
-				}
+				do {
+					if (Keyboard::isKeyPressed(sf::Keyboard::R))
+					{
+						user_choice = 0;
+						count = 0;
+						launches = 3;
+						restart = 1;
+						if_launched = 0;
+						//window.clear();
+					}
+					else if ((Keyboard::isKeyPressed(sf::Keyboard::Escape)))
+						window.close();
+				} while (restart == 0);
 			}
 		}
-		if (user_choice == 7) {
+
+		else if (user_choice == 2) {
+		score_count = 0;
+		int launches = 1;
+		line_that_blocks_the_ball_from_the_launcher = new ConvexRect(800, 0, 10, 180);
+			//test case 1: automatic launch, slow ball, flippers if collision?
+			while (launches > 0) {
+				//determine number of launches left to display
+				if (launches == 1)
+					launches_display.setString("0");
+
+				/*else if (launches == 2)
+					launches_display.setString("2");
+
+				else if (launches == 3)
+					launches_display.setString("3");*/
+
+				// Keyboard Actions
+				leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
+				rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+				int if_launch = 0;
+
+				if (flag == 0) {
+					if_launch = ballLauncher->moveLauncher_slow();
+				}
+
+				if ((if_launch) && (ballLauncher->getposition().y == 830)) {
+
+					//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
+					//2 if the ball launches medium, and 3 if the ball launches fast
+					if (if_launch == 1) {
+						pinball->setVelocity(0.0, -2.0);
+						setting_display.setString("Slow");
+					}
+					
+					pinball->update();
+					flag = 1;
+				}
+				ballLauncher->update();
+				//pinball->update();
+				if (flag == 1) {
+
+					if ((if_launched == 0) && (pinball->getposition().x < 700)) {
+						if_launched = 1;
+					}
+
+					pinball->hitboundary(WIDTH, HEIGHT);
+					//pinball->hitboundary2(290, HEIGHT);
+					//pinball->hitboundary2(810, HEIGHT);
+					if (pinball->collision(bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					pinball->collision(corner);
+					pinball->collision(left_corner);
+					pinball->collision(left_triangle);
+					pinball->collision(left_bot_corner);
+					//pinball->collision(right_triangle);
+					pinball->collision(right_bot_corner);
+
+					if (pinball->collision(band_bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(band_bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+
+					pinball->collision(leftFlipper->getShape());
+
+					pinball->collision(rightFlipper->getShape());
+
+					pinball->collision(ballLauncher->getShape());
+					pinball->collision(right_rectangle->getShape());
+					pinball->collision(left_rectangle->getShape());
+					pinball->collision(right_bound->getShape());
+					pinball->collision(left_bound->getShape());
+					if (if_launched) {
+						pinball->collision(line_that_blocks_the_ball_from_the_launcher->getShape());
+					}
+					pinball->update();
+
+
+					if ((pinball->getposition().y) > 900) {
+						launches--;
+						pinball = new ball(825, 770);
+						if_launched = 0;
+						flag = 0;
+					}
+
+				}
+
+				test_case_description.setString("Test Case 1:\nAutomatic launch at slow speed, manual flipper action. Only 1 launch for test cases.");
+
+				window.clear();
+				window.draw(pinball->getShape());
+				window.draw(leftFlipper->getShape());
+				window.draw(rightFlipper->getShape());
+				window.draw(ballLauncher->getShape());
+				if (if_launched)
+					window.draw(line_that_blocks_the_ball_from_the_launcher->getShape());
+
+				window.draw(right_rectangle->getShape());
+				window.draw(left_rectangle->getShape());
+				window.draw(corner);
+				window.draw(left_corner);
+				window.draw(left_bound->getShape());
+				window.draw(left_triangle);
+				window.draw(right_bound->getShape());
+				window.draw(titleshadow);
+				window.draw(scoreshadow);
+				window.draw(title);
+				window.draw(score);
+				window.draw(score_box2);
+				window.draw(score_box1);
+				window.draw(bumper1->getShape());
+				window.draw(bumper2->getShape());
+				window.draw(band_bumper1->getShape());
+				window.draw(band_bumper2->getShape());
+				window.draw(game_rules);
+				window.draw(launches_left);
+				window.draw(launch_setting);
+				window.draw(launches_display);
+				window.draw(setting_display);
+				window.draw(test_case_description);
+				window.draw(score_counter);
+
+				window.display();
+				//count = 1;
+			}
+
+			if (launches == 0) {
+				window.clear();
+				launches_display.setCharacterSize(20);
+				launches_display.setString("The test case is over!\nPress R to go back to main menu.\nPress the ESC to quit the game.");
+
+				window.draw(launches_display);
+				window.display();
+				do {
+					if (Keyboard::isKeyPressed(sf::Keyboard::R))
+					{
+						user_choice = 0;
+						count = 0;
+						launches = 3;
+						restart = 1;
+						//window.clear();
+					}
+					else if ((Keyboard::isKeyPressed(sf::Keyboard::Escape))) {
+						window.close();
+						return 0;
+					}
+				} while (restart == 0);
+			}
+
+		}
+
+		else if (user_choice == 3) {
+		line_that_blocks_the_ball_from_the_launcher = new ConvexRect(800, 0, 10, 250);
+		score_count = 0;
+			//test case 2: automatic launch, medium ball, manual flippers, 1 launch
+			int launches = 1; int if_launched = 0;
+
+			while (launches > 0) {
+				//determine number of launches left to display
+				if (launches == 1)
+					launches_display.setString("0");
+
+
+					// Keyboard Actions
+				leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
+				rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+				int if_launch = 0;
+
+				if (flag == 0) {
+					if_launch = ballLauncher->moveLauncher_medium();
+				}
+
+				if ((if_launch) && (ballLauncher->getposition().y == 830)) {
+
+					//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
+					//2 if the ball launches medium, and 3 if the ball launches fast
+					if (if_launch == 1) {
+						pinball->setVelocity(0.0, -5.0);
+						setting_display.setString("Medium");
+					}
+
+					pinball->update();
+					flag = 1;
+				}
+				ballLauncher->update();
+				//pinball->update();
+				if (flag == 1) {
+
+					if ((if_launched == 0) && (pinball->getposition().x < 700)) {
+						if_launched = 1;
+					}
+
+					pinball->hitboundary(WIDTH, HEIGHT);
+					//pinball->hitboundary2(290, HEIGHT);
+					//pinball->hitboundary2(810, HEIGHT);
+					if (pinball->collision(bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					pinball->collision(corner);
+					pinball->collision(left_corner);
+					pinball->collision(left_triangle);
+					pinball->collision(left_bot_corner);
+					//pinball->collision(right_triangle);
+					pinball->collision(right_bot_corner);
+
+					if (pinball->collision(band_bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(band_bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+
+					pinball->collision(leftFlipper->getShape());
+
+					pinball->collision(rightFlipper->getShape());
+
+					pinball->collision(ballLauncher->getShape());
+					pinball->collision(right_rectangle->getShape());
+					pinball->collision(left_rectangle->getShape());
+					pinball->collision(right_bound->getShape());
+					pinball->collision(left_bound->getShape());
+					if (if_launched) {
+						pinball->collision(line_that_blocks_the_ball_from_the_launcher->getShape());
+					}
+					pinball->update();
+
+
+					if ((pinball->getposition().y) > 900) {
+						launches--;
+						pinball = new ball(825, 770);
+						if_launched = 0;
+						flag = 0;
+					}
+
+				}
+
+				test_case_description.setString("Test Case 2:\nAutomatic launch at medium speed, manual flipper action. Only 1 launch for test cases.");
+
+				window.clear();
+				window.draw(pinball->getShape());
+				window.draw(leftFlipper->getShape());
+				window.draw(rightFlipper->getShape());
+				window.draw(ballLauncher->getShape());
+				if (if_launched)
+					window.draw(line_that_blocks_the_ball_from_the_launcher->getShape());
+
+				window.draw(right_rectangle->getShape());
+				window.draw(left_rectangle->getShape());
+				window.draw(corner);
+				window.draw(left_corner);
+				window.draw(left_bound->getShape());
+				window.draw(left_triangle);
+				window.draw(right_bound->getShape());
+				window.draw(titleshadow);
+				window.draw(scoreshadow);
+				window.draw(title);
+				window.draw(score);
+				window.draw(score_box2);
+				window.draw(score_box1);
+				window.draw(bumper1->getShape());
+				window.draw(bumper2->getShape());
+				window.draw(band_bumper1->getShape());
+				window.draw(band_bumper2->getShape());
+				window.draw(game_rules);
+				window.draw(launches_left);
+				window.draw(launch_setting);
+				window.draw(launches_display);
+				window.draw(setting_display);
+				window.draw(test_case_description);
+				window.draw(score_counter);
+
+				window.display();
+				//count = 1;
+			}
+
+			if (launches == 0) {
+				window.clear();
+				launches_display.setCharacterSize(20);
+				launches_display.setString("The test case is over!\nPress R to go back to main menu.\nPress the ESC to quit the game.");
+
+				window.draw(launches_display);
+				window.display();
+				do {
+					if (Keyboard::isKeyPressed(sf::Keyboard::R))
+					{
+						user_choice = 0;
+						count = 0;
+						launches = 3;
+						restart = 1;
+						//window.clear();
+					}
+					else if ((Keyboard::isKeyPressed(sf::Keyboard::Escape))) {
+						window.close();
+						return 0;
+					}
+
+				} while (restart == 0);
+			}
+		}
+
+		else if (user_choice == 4) {
+		score_count = 0;
+			//test case 3: automatic launch, fast ball, manual flippers, 1 launch
+			int launches = 1; int if_launched = 0;
+
+			while (launches > 0) {
+				//determine number of launches left to display
+				if (launches == 1)
+					launches_display.setString("0");
+
+
+				// Keyboard Actions
+				leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
+				rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+				int if_launch = 0;
+
+				if (flag == 0) {
+					if_launch = ballLauncher->moveLauncher_medium();
+				}
+
+				if ((if_launch) && (ballLauncher->getposition().y == 830)) {
+
+					//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
+					//2 if the ball launches medium, and 3 if the ball launches fast
+					if (if_launch == 1) {
+						pinball->setVelocity(0.0, -8.0);
+						setting_display.setString("Fast!");
+					}
+
+					pinball->update();
+					flag = 1;
+				}
+				ballLauncher->update();
+				//pinball->update();
+				if (flag == 1) {
+
+					if ((if_launched == 0) && (pinball->getposition().x < 700)) {
+						if_launched = 1;
+					}
+
+					pinball->hitboundary(WIDTH, HEIGHT);
+					//pinball->hitboundary2(290, HEIGHT);
+					//pinball->hitboundary2(810, HEIGHT);
+					if (pinball->collision(bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					pinball->collision(corner);
+					pinball->collision(left_corner);
+					pinball->collision(left_triangle);
+					pinball->collision(left_bot_corner);
+					//pinball->collision(right_triangle);
+					pinball->collision(right_bot_corner);
+
+					if (pinball->collision(band_bumper1->getShape()))
+						update_score(&window, &score_counter, &score_count);
+					if (pinball->collision(band_bumper2->getShape()))
+						update_score(&window, &score_counter, &score_count);
+
+					pinball->collision(leftFlipper->getShape());
+
+					pinball->collision(rightFlipper->getShape());
+						//update_score(&window, &score_counter, &score_count);
+
+					pinball->collision(ballLauncher->getShape());
+					pinball->collision(right_rectangle->getShape());
+					pinball->collision(left_rectangle->getShape());
+					pinball->collision(right_bound->getShape());
+					pinball->collision(left_bound->getShape());
+					if (if_launched) {
+						pinball->collision(line_that_blocks_the_ball_from_the_launcher->getShape());
+					}
+					pinball->update();
+
+
+					if ((pinball->getposition().y) > 900) {
+						launches--;
+						pinball = new ball(825, 770);
+						if_launched = 0;
+						flag = 0;
+					}
+
+				}
+
+				test_case_description.setString("Test Case 3:\nAutomatic launch at fast speed, manual flipper action. Only 1 launch for test cases.");
+
+				window.clear();
+				window.draw(pinball->getShape());
+				window.draw(leftFlipper->getShape());
+				window.draw(rightFlipper->getShape());
+				window.draw(ballLauncher->getShape());
+				if (if_launched)
+					window.draw(line_that_blocks_the_ball_from_the_launcher->getShape());
+
+				window.draw(right_rectangle->getShape());
+				window.draw(left_rectangle->getShape());
+				window.draw(corner);
+				window.draw(left_corner);
+				window.draw(left_bound->getShape());
+				window.draw(left_triangle);
+				window.draw(right_bound->getShape());
+				window.draw(titleshadow);
+				window.draw(scoreshadow);
+				window.draw(title);
+				window.draw(score);
+				window.draw(score_box2);
+				window.draw(score_box1);
+				window.draw(bumper1->getShape());
+				window.draw(bumper2->getShape());
+				window.draw(band_bumper1->getShape());
+				window.draw(band_bumper2->getShape());
+				window.draw(game_rules);
+				window.draw(launches_left);
+				window.draw(launch_setting);
+				window.draw(launches_display);
+				window.draw(setting_display);
+				window.draw(test_case_description);
+				window.draw(score_counter);
+
+				window.display();
+				//count = 1;
+			}
+
+			if (launches == 0) {
+				window.clear();
+				launches_display.setCharacterSize(20);
+				launches_display.setString("The test case is over!\nPress R to go back to main menu.\nPress the ESC to quit the game.");
+
+				window.draw(launches_display);
+				window.display();
+				do {
+					if (Keyboard::isKeyPressed(sf::Keyboard::R))
+					{
+						user_choice = 0;
+						count = 0;
+						launches = 3;
+						restart = 1;
+						//window.clear();
+					}
+					else if ((Keyboard::isKeyPressed(sf::Keyboard::Escape))) {
+						window.close();
+						return 0;
+					}
+				} while (restart == 0);
+			}
+		}
+		
+
+		else if (user_choice == 5) {
+
+		}
+
+		else if (user_choice == 6) {
+
+		}
+
+		else if (user_choice == 7) {
 			window.close();
+			return 0;
 		}
 
 	}

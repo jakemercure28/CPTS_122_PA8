@@ -159,6 +159,12 @@ void title_score_game_setup(Font* MyFont, sf::Text* title, Text* titleshadow, Te
 	scoreshadow->setPosition(50.f, 15.f);
 }
 
+void update_score(RenderWindow* window, Text *score_counter, int *score_count) {
+	*score_count += 10;
+	score_counter->setString(to_string(*score_count));
+	window->draw(*score_counter);
+}
+
 
 
 #endif
