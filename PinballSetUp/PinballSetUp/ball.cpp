@@ -1,7 +1,6 @@
 #include "ball.h"
 #include <cmath>
 #include <iostream>
-#define REBOUND 1.00f
 ball::ball(float initX, float initY)
 {
 	position.x = initX;
@@ -50,7 +49,7 @@ void ball::collision(ConvexShape shape)
 		float yDiff = (originA.y - (rotatedPoint.y + shape.getPosition().y));
 
 		float distance = sqrt(xDiff * xDiff + yDiff * yDiff);
-		if (distance < ballShape.getRadius())
+		if (distance <= ballShape.getRadius())
 		{
 			Vector2f normal = Vector2f(xDiff / distance, yDiff / distance);
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
@@ -145,30 +144,28 @@ void ball::hitboundary(int width, int height)
 
 void ball::update()
 {
-	ApplyGravity(Vector2f(0.f, 0.001f));
+	ApplyGravity(Vector2f(0.f, 0.0025f));
 	position = position + getVelocity();
 	ballShape.setPosition(position);
 }
 
 void ball::launch(int setting)
 {
-
+	float gravity = 0.0f;
 	if (setting == 1) {
-		ApplyGravity(Vector2f(0.f, -.01f));
-		position = position + getVelocity();
-		ballShape.setPosition(position);
+		gravity = -0.01f;
 
 	}
 	else if (setting == 2) {
-		ApplyGravity(Vector2f(0.f, -.02f));
-		position = position + getVelocity();
-		ballShape.setPosition(position);
+		gravity = -0.02f;
 	}
 	else if (setting == 3) {
-		ApplyGravity(Vector2f(0.f, -.04f));
-		position = position + getVelocity();
-		ballShape.setPosition(position);
+		gravity = -0.04f;
 	}
+
+	ApplyGravity(Vector2f(0.f, gravity));
+	position = position + getVelocity();
+	ballShape.setPosition(position);
 }
 
 Vector2f ball::rotatePoint(Vector2f point, float angle)

@@ -1,6 +1,6 @@
 #include "ConvexRect.h"
 
-ConvexRect::ConvexRect(float initX, float initY,float width,float height ,float rotation)
+ConvexRect::ConvexRect(float initX, float initY,float width,float height ,float rotation,const Color color)
 {
 	position.x = initX;
 	position.y = initY;
@@ -12,7 +12,7 @@ ConvexRect::ConvexRect(float initX, float initY,float width,float height ,float 
 	rectShape.setPoint(3, Vector2f(width, 0));
 	rectShape.move(position);
 	rectShape.rotate(rotation);
-
+	rectShape.setFillColor(color);
 }
 
 Vector2f ConvexRect::getposition()

@@ -10,7 +10,7 @@ private:
 	ConvexShape rectShape;
 
 public:
-	ConvexRect(float initX, float initY,float width, float height,float rotation=0);
+	ConvexRect(float initX, float initY,float width, float height,float rotation=0,const Color=Color::White);
 	Vector2f getposition();
 	ConvexShape getShape();
 };

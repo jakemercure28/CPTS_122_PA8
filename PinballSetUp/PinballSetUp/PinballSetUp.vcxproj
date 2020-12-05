@@ -158,6 +158,8 @@
     <ClCompile Include="flipper.cpp" />
     <ClCompile Include="launcher.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pinball_game.cpp" />
+    <ClCompile Include="pinball_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball.h" />
@@ -167,6 +169,8 @@
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
     <ClInclude Include="pa8.h" />
+    <ClInclude Include="pinball_game.h" />
+    <ClInclude Include="pinball_menu.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="OCR-A BT.ttf" />
