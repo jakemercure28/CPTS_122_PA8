@@ -9,7 +9,7 @@ class band_bumper
 private:
 	Vector2f position;
 	ConvexShape band_bumper_shape;
-	float rotation;
+	Color band_bumper_color;
 	bool is_activated;
 
 public:
