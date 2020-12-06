@@ -1,6 +1,4 @@
 #include "ball.h"
-#include <cmath>
-#include <iostream>
 ball::ball(float initX, float initY)
 {
 	position.x = initX;
@@ -37,7 +35,7 @@ Vector2f ball::getVelocity()
 	return Velocity;
 }
 
-void ball::collision(ConvexShape shape)
+bool ball::collision(ConvexShape shape)
 {
 	Vector2f originA = getOrigin();
 
@@ -49,13 +47,13 @@ void ball::collision(ConvexShape shape)
 		float yDiff = (originA.y - (rotatedPoint.y + shape.getPosition().y));
 
 		float distance = sqrt(xDiff * xDiff + yDiff * yDiff);
-		if (distance < ballShape.getRadius())
+		if (distance <= ballShape.getRadius())
 		{
 			Vector2f normal = Vector2f(xDiff / distance, yDiff / distance);
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
-			Velocity = Velocity - int1;
-			break;
+			Velocity = REBOUND * (Velocity - int1);
+ 			return true; 
 		}
 	}
 
@@ -78,20 +76,24 @@ void ball::collision(ConvexShape shape)
 
 		Vector2f closestPoint = Vector2f((linePt1.x + (dotp * (linePt2.x - linePt1.x))), (linePt1.y + (dotp * (linePt2.y - linePt1.y))));
 		if (!linePoint(linePt1, linePt2, closestPoint))
+		{
 			continue;
+		}
 		float trueDistance = distance(originA, closestPoint);
 		if (trueDistance <= ballShape.getRadius())
 		{
 			Vector2f normal = Vector2f((originA.x - closestPoint.x) / trueDistance, (originA.y - closestPoint.y) / trueDistance);
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
-			Velocity = Velocity - int1;
+			Velocity = REBOUND * (Velocity - int1);
+			return true;
 		}
 	}
+	return false;
 
 }
 
-void ball::collision(CircleShape shape)
+bool ball::collision(CircleShape shape)
 {
 
 	Vector2f originA = getOrigin();
@@ -113,53 +115,67 @@ void ball::collision(CircleShape shape)
 		Vector2f normal = Vector2f(xDiff / distance, yDiff / distance);
 
 		float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
-		Vector2f  int1 = (2 * ddotn) * normal;
-		Velocity = Velocity - int1;
+		Vector2f  int1 = (2 * ddotn) * normal; 
+		Velocity = REBOUND * (Velocity - int1);
+		return true;
+	}
+	return false;
+}
+
+void ball::hitboundary(FloatRect bound)
+{
+	if (position.x <= bound.left || position.x >= (bound.left + bound.width))
+		Velocity.x *= -REBOUND;
+	if (position.y <= bound.left || position.y >= (bound.top + bound.height))
+		Velocity.y *= -REBOUND;
+}
+
+void ball::hitboundary2(int width, int height)
+{
+	if ((((position.x) < (800)) || ((position.x) > (820))) && ((position.y) > (100)))
+	{
+		if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
+			Velocity.x *= -1.;
+
+		if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
+			Velocity.y *= -1.;
 	}
 }
 
-void ball::hitboundary(int width, int height)
-{
-	if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
-		Velocity.x *= -1.;
-
-	if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
-		Velocity.y *= -1.;
-}
 
 void ball::update()
 {
-	ApplyGravity(Vector2f(0.f, 0.001f));
+	ApplyGravity(Vector2f(0.f, 0.0025f));
 	position = position + getVelocity();
 	ballShape.setPosition(position);
 }
 
 void ball::launch(int setting)
 {
+	Velocity.x = 0;
+	Velocity.y = 0;
 
+	float gravity = 0.01f;
 	if (setting == 1) {
-		ApplyGravity(Vector2f(0.f, -.01f));
-		position = position + getVelocity();
-		ballShape.setPosition(position);
-
+		Velocity.y = -1;
 	}
 	else if (setting == 2) {
-		ApplyGravity(Vector2f(0.f, -.02f));
-		position = position + getVelocity();
-		ballShape.setPosition(position);
+		Velocity.y = -5;
 	}
 	else if (setting == 3) {
-		ApplyGravity(Vector2f(0.f, -.04f));
-		position = position + getVelocity();
-		ballShape.setPosition(position);
+		Velocity.y = -20;
 	}
+
+	ApplyGravity(Vector2f(0.f, gravity));
+	position = position + getVelocity();
+	ballShape.setPosition(position);
 }
 
 Vector2f ball::rotatePoint(Vector2f point, float angle)
 {
 
-	float s = sin(angle * PI / 180);
-	float c = cos(angle * PI / 180);
+	double s = sin(angle * PI / 180);
+	double c = cos(angle * PI / 180);
 
 	Vector2f rotatedPoint = Vector2f(point.x * c - point.y * s, point.x * s + point.y * c);
 	return rotatedPoint;
@@ -186,3 +202,10 @@ float ball::distance(Vector2f point1, Vector2f point2)
 
 	return distance;
 }
+
+void ball::setVelocity(float xvel, float yvel)
+{
+	Velocity.x = xvel;
+	Velocity.y = yvel;
+}
+

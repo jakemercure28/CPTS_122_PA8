@@ -1,7 +1,7 @@
 #ifndef LAUNCHER_H
 #define LAUNCHER_H
 
-#define MAXPULLBACK 50
+#define MAXPULLBACK 70
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -17,6 +17,9 @@ public:
 	Vector2f getposition();
 	ConvexShape getShape();
 	int moveLauncher(bool);
+	int moveLauncher_slow();
+	int moveLauncher_medium();
+	int moveLauncher_fast();
 	void pullBack();
 	void release();
 	void update();
