@@ -111,7 +111,6 @@ int play_game(RenderWindow* window, int testcase)
 			//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
 			//2 if the ball launches medium, and 3 if the ball launches fast
 			setSetting(pinball, &textObjects[3], if_launch);
-			launches--;
 			setLaunches(&textObjects[2], launches);
 			pinball->update();
 			flag = 1;
@@ -138,7 +137,7 @@ int play_game(RenderWindow* window, int testcase)
 			pinball->update();  
 
 			if ((pinball->getposition().y) > 900) {
-				
+				launches--;
 				pinball = new ball(825, 770);
 				flag = 0;
 			}
