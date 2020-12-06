@@ -1,5 +1,6 @@
 #include "flipper.h"
 
+
 flipper::flipper(float initX, float initY, float initRot, bool direction)
 {
 	position.x = initX;
@@ -35,14 +36,14 @@ float flipper::getRotation()
 
 void flipper::rotateUp()
 {
-	flipperShape.rotate(rotDir ? 1 : -1);
-	rotation++;
+	flipperShape.rotate(rotDir ? SPEED : -SPEED);
+	rotation += SPEED;
 }
 
 void flipper::rotateDown()
 {
-	flipperShape.rotate(rotDir ? -1 : 1);
-	rotation--;
+	flipperShape.rotate(rotDir ? -SPEED : SPEED);
+	rotation -= SPEED;
 }
 void flipper::rotateFlipper(bool upDown)
 {

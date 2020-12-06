@@ -36,7 +36,7 @@ void launcher::release()
 		pullback--;
 }
 
-int launcher::moveLauncher(bool upDown)
+int launcher::moveLauncher(bool upDown, int* max_pull_back)
 {
 	int a;
 	if (upDown)
@@ -46,6 +46,9 @@ int launcher::moveLauncher(bool upDown)
 	}
 	else
 	{
+		if (pullback > * max_pull_back) {
+			*max_pull_back = pullback;
+		}
 		if (pullback > 0) {
 			if (pullback <= 30)
 				a = 1;

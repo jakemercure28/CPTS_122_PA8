@@ -5,14 +5,14 @@ ConvexRect::ConvexRect(float initX, float initY,float width,float height ,float 
 	position.x = initX;
 	position.y = initY;
 
-	rectShape.setPointCount(4);
-	rectShape.setPoint(0, Vector2f(0, 0));
-	rectShape.setPoint(1, Vector2f(0, height));
-	rectShape.setPoint(2, Vector2f(width, height));
-	rectShape.setPoint(3, Vector2f(width, 0));
-	rectShape.setFillColor(color);
-	rectShape.move(position);
-	rectShape.rotate(rotation);
+	convex_shape_object.setPointCount(4);
+	convex_shape_object.setPoint(0, Vector2f(0, 0));
+	convex_shape_object.setPoint(1, Vector2f(0, height));
+	convex_shape_object.setPoint(2, Vector2f(width, height));
+	convex_shape_object.setPoint(3, Vector2f(width, 0));
+	convex_shape_object.setFillColor(color);
+	convex_shape_object.move(position);
+	convex_shape_object.rotate(rotation);
 }
 
 Vector2f ConvexRect::getposition()
@@ -22,5 +22,5 @@ Vector2f ConvexRect::getposition()
 
 ConvexShape ConvexRect::getShape()
 {
-	return rectShape;
+	return convex_shape_object;
 }

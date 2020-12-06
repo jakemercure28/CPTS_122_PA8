@@ -9,12 +9,13 @@
 
 int main()
 {
+
 	sf::ContextSettings settings;
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
 
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar, settings);
-
+	window.setFramerateLimit(180);
 	//Game State 
 	int game_state = 0;
 	while (window.isOpen())

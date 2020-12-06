@@ -1,18 +1,17 @@
 #ifndef CONVEXRECT_H
 #define CONVEXRECT_H
-
+#include"convex_shape.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
-class ConvexRect
+class ConvexRect:convex_shape
 {
 private:
 	Vector2f position;
-	ConvexShape rectShape;
 
 public:
 	ConvexRect(float initX, float initY,float width, float height,float rotation=0,const Color=Color::White);
 	Vector2f getposition();
-	ConvexShape getShape();
+	virtual ConvexShape getShape();
 };
 
 

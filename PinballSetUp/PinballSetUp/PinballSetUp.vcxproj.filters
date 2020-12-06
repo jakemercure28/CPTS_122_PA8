@@ -42,6 +42,12 @@
     <ClCompile Include="pinball_game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="convex_shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="circle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball.h">
@@ -71,10 +77,27 @@
     <ClInclude Include="pinball_game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="convex_shape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="circle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="OCR-A BT.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Pinball Machine Single Flipper Noise.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="launcher sound.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>
