@@ -1,6 +1,6 @@
 #ifndef FLIPPER_H
 #define FLIPPER_H
-
+#define SPEED 3
 #include <SFML/graphics.hpp>
 
 using namespace sf;
