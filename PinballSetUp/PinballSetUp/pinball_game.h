@@ -10,6 +10,7 @@
 #include "launcher.h"
 #include "flipper.h"
 
+
 using namespace sf;
 
 int play_game(RenderWindow*,int testCase=0);

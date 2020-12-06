@@ -1,22 +1,21 @@
 #ifndef BUMPER_H
 #define BUMPER_H
 
+#include "circle.h"
+
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
-class bumper
+class bumper :circle
 {
-private:
-	Vector2f position;
-	CircleShape bumper_shape;
 
 public:
 	// constructor
 	bumper(float initX, float initY);
 
 	
-	Vector2f getposition();
-	CircleShape getShape();
+	virtual Vector2f getposition();
+	virtual CircleShape getShape();
 
 	void ball_contact();
 	void update();

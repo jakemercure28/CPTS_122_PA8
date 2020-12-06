@@ -154,7 +154,9 @@
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="band_bumper.cpp" />
     <ClCompile Include="bumper.cpp" />
+    <ClCompile Include="circle.cpp" />
     <ClCompile Include="ConvexRect.cpp" />
+    <ClCompile Include="convex_shape.cpp" />
     <ClCompile Include="flipper.cpp" />
     <ClCompile Include="launcher.cpp" />
     <ClCompile Include="main.cpp" />
@@ -165,7 +167,9 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="band_bumper.h" />
     <ClInclude Include="bumper.h" />
+    <ClInclude Include="circle.h" />
     <ClInclude Include="ConvexRect.h" />
+    <ClInclude Include="convex_shape.h" />
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
     <ClInclude Include="pa8.h" />

@@ -4,12 +4,12 @@ bumper::bumper(float initX, float initY)
 {
 	position.x = initX;
 	position.y = initY;
-	bumper_shape.setRadius(45);
-	bumper_shape.setPosition(position);
+	circle_shape.setRadius(45);
+	circle_shape.setPosition(position);
 
-	bumper_shape.setFillColor(sf::Color::Black);
-	bumper_shape.setOutlineThickness(7);
-	bumper_shape.setOutlineColor(sf::Color::Red);
+	circle_shape.setFillColor(sf::Color::Black);
+	circle_shape.setOutlineThickness(7);
+	circle_shape.setOutlineColor(sf::Color::Red);
 	
 }
 
@@ -20,5 +20,5 @@ Vector2f bumper::getposition()
 
 CircleShape bumper::getShape()
 {
-	return bumper_shape;
+	return circle_shape;
 }
