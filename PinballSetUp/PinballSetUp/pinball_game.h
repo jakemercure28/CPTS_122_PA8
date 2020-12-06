@@ -1,7 +1,7 @@
 #ifndef PINBALL_GAME_H
 #define PINBALL_GAME_H
-
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "ball.h"
 #include "bumper.h"
@@ -9,6 +9,7 @@
 #include "ConvexRect.h"
 #include "launcher.h"
 #include "flipper.h"
+#include "sound.h"
 
 
 using namespace sf;

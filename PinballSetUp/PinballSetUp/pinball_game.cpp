@@ -1,9 +1,12 @@
 #include "pinball_game.h"
 
 
-
 int play_game(RenderWindow* window, int testcase)
 {
+	//sounds
+	sound_manager clack_sound("Pinball Machine Single Flipper Noise.wav");
+	sound_manager launcher_sound("launcher sound.wav");
+
 	// Game state variables
 	int user_choice = 0;
 	int count = 0;
@@ -70,11 +73,22 @@ int play_game(RenderWindow* window, int testcase)
 
 	while (launches > 0) {
 		//determine number of launches left to display
-		
+
 
 		// Keyboard Actions
-		leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
-		rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+		if (Keyboard::isKeyPressed(Keyboard::A))
+		{
+			leftFlipper->rotateFlipper(true);
+			clack_sound.init();
+		}
+		else leftFlipper->rotateFlipper(false);
+
+		if (Keyboard::isKeyPressed(Keyboard::D))
+		{
+			rightFlipper->rotateFlipper(true);
+			clack_sound.init();
+		}
+		else rightFlipper->rotateFlipper(false);
 
 		if (flag == 0)
 			switch (testcase)
@@ -94,10 +108,15 @@ int play_game(RenderWindow* window, int testcase)
 			case 0:
 			default:
 				//if_launch_prev = if_launch;
-				if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space), &max_pull_back);
-				
+				if (Keyboard::isKeyPressed(Keyboard::Space))
+				{
+					if_launch = ballLauncher->moveLauncher(true, &max_pull_back);
+					launcher_sound.init();
+				}
+				else if_launch = ballLauncher->moveLauncher(false, &max_pull_back);
+
 			}
-		if ((if_launch) && (ballLauncher->getposition().y == 830) && !flag) 
+		if ((if_launch) && (ballLauncher->getposition().y == 830) && !flag)
 		{
 			if (max_pull_back) {
 				if (max_pull_back <= 30)
@@ -134,7 +153,7 @@ int play_game(RenderWindow* window, int testcase)
 			{
 				pinball->collision(collidableObjects[i]);
 			}
-			pinball->update();  
+			pinball->update();
 
 			if ((pinball->getposition().y) > 900) {
 				launches--;
