@@ -181,8 +181,11 @@
     <Font Include="OCR-A BT.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="bump_sound.wav" />
     <Media Include="launcher sound.wav" />
+    <Media Include="open_sound_effect.wav" />
     <Media Include="Pinball Machine Single Flipper Noise.wav" />
+    <Media Include="swoosh.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,9 +3,15 @@
 
 int play_game(RenderWindow* window, int testcase)
 {
-	//sounds
+	//sound variables
 	sound_manager clack_sound("Pinball Machine Single Flipper Noise.wav");
 	sound_manager launcher_sound("launcher sound.wav");
+	sound_manager opening_sound("open_sound_effect.wav");
+	sound_manager ball_drop_sound("swoosh.wav");
+
+
+	// play opening sound
+	opening_sound.init();
 
 	// Game state variables
 	int user_choice = 0;
@@ -155,8 +161,10 @@ int play_game(RenderWindow* window, int testcase)
 			}
 			pinball->update();
 
+
 			if ((pinball->getposition().y) > 900) {
 				launches--;
+				ball_drop_sound.init();
 				pinball = new ball(825, 770);
 				flag = 0;
 			}

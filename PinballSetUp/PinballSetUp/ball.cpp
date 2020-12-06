@@ -1,4 +1,5 @@
 #include "ball.h"
+#include "sound.h"
 ball::ball(float initX, float initY)
 {
 	position.x = initX;
@@ -95,7 +96,6 @@ bool ball::collision(ConvexShape shape)
 
 bool ball::collision(CircleShape shape)
 {
-
 	Vector2f originA = getOrigin();
 	Vector2f originB = Vector2f(shape.getPosition().x + shape.getRadius(), shape.getPosition().y + shape.getRadius());
 
@@ -105,7 +105,7 @@ bool ball::collision(CircleShape shape)
 	float ySqr = yDiff * yDiff;
 
 	float distance = sqrt(xSqr + ySqr);
-
+	
 	if (distance <= shape.getRadius() + ballShape.getRadius())
 	{
 		// r = d - 2(d*n)n
