@@ -1,8 +1,11 @@
 #ifndef BALL_H
 #define BALL_H
+
 #define PI 3.14159265
-#define REBOUND 0.99f
+#define REBOUND 1.00f
 #include <SFML/Graphics.hpp>
+#include <cmath>
+#include <iostream>
 
 using namespace sf;
 class ball

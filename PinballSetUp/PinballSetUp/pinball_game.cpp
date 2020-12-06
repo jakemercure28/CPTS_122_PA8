@@ -91,7 +91,8 @@ int play_game(RenderWindow* window, int testcase)
 				break;
 			}
 
-		if ((if_launch) && (ballLauncher->getposition().y == 830)) {
+		if ((if_launch) && (ballLauncher->getposition().y == 830) && !flag) 
+		{
 
 			//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
 			//2 if the ball launches medium, and 3 if the ball launches fast
@@ -119,7 +120,7 @@ int play_game(RenderWindow* window, int testcase)
 			{
 				pinball->collision(collidableObjects[i]);
 			}
-			pinball->update();
+			pinball->update();  
 
 			if ((pinball->getposition().y) > 900) {
 				launches--;

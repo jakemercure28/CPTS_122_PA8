@@ -1,6 +1,4 @@
 #include "ball.h"
-#include <cmath>
-#include <iostream>
 ball::ball(float initX, float initY)
 {
 	position.x = initX;
@@ -54,8 +52,8 @@ bool ball::collision(ConvexShape shape)
 			Vector2f normal = Vector2f(xDiff / distance, yDiff / distance);
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
-			Velocity = Velocity - int1;
-			return true;
+			Velocity = REBOUND * (Velocity - int1);
+ 			return true; 
 		}
 	}
 
@@ -81,8 +79,6 @@ bool ball::collision(ConvexShape shape)
 		{
 			continue;
 		}
-		else
-		{
 		float trueDistance = distance(originA, closestPoint);
 		if (trueDistance <= ballShape.getRadius())
 		{
@@ -91,7 +87,6 @@ bool ball::collision(ConvexShape shape)
 			Vector2f int1 = (2 * ddotn) * normal;
 			Velocity = REBOUND * (Velocity - int1);
 			return true;
-		}
 		}
 	}
 	return false;
@@ -120,7 +115,7 @@ bool ball::collision(CircleShape shape)
 		Vector2f normal = Vector2f(xDiff / distance, yDiff / distance);
 
 		float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
-		Vector2f  int1 = (2 * ddotn) * normal;
+		Vector2f  int1 = (2 * ddotn) * normal; 
 		Velocity = REBOUND * (Velocity - int1);
 		return true;
 	}
@@ -179,8 +174,8 @@ void ball::launch(int setting)
 Vector2f ball::rotatePoint(Vector2f point, float angle)
 {
 
-	float s = sin(angle * PI / 180);
-	float c = cos(angle * PI / 180);
+	double s = sin(angle * PI / 180);
+	double c = cos(angle * PI / 180);
 
 	Vector2f rotatedPoint = Vector2f(point.x * c - point.y * s, point.x * s + point.y * c);
 	return rotatedPoint;
