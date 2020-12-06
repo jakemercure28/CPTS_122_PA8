@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "ball.h"
 #include "flipper.h"
 #include "bumper.h"
@@ -7,12 +8,18 @@
 #include "band_bumper.h"
 #include <iostream>
 #include "pa8.h"
+#include "sound.h"
 
 #define WIDTH 900
 #define HEIGHT 900
 
 int main()
 {
+	
+	sound_manager clack_sound("Pinball Machine Single Flipper Noise.wav");
+	sound_manager launcher_sound("launcher sound.wav");
+	
+
 	sf::ContextSettings settings;
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
@@ -34,6 +41,7 @@ int main()
 	//Flippers
 	flipper* leftFlipper = new flipper(390, 815, 90, false);
 	flipper* rightFlipper = new flipper(700, 815, 90, true);
+
 
 	//launcher
 	launcher* ballLauncher = new launcher(855, 830);
@@ -143,9 +151,29 @@ int main()
 		if ((user_choice == 1) || (user_choice == 2) || (user_choice == 3) || (user_choice == 4) || (user_choice == 5) || (user_choice == 6))
 		{
 			// Keyboard Actions
-			leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
-			rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
-			int if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
+			if (Keyboard::isKeyPressed(Keyboard::A))
+			{
+				leftFlipper->rotateFlipper(true);
+				clack_sound.init();
+			}
+			else leftFlipper->rotateFlipper(false);
+
+			if (Keyboard::isKeyPressed(Keyboard::D))
+			{
+				rightFlipper->rotateFlipper(true);
+				clack_sound.init(); 
+			}
+			else rightFlipper->rotateFlipper(false);
+
+			int if_launch = 0;
+			if (Keyboard::isKeyPressed(Keyboard::Space))
+			{
+				if_launch = ballLauncher->moveLauncher(true);
+				launcher_sound.init();
+			}
+			else ballLauncher->moveLauncher(false);
+
+		//	int if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
 			if (if_launch) {
 				//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
 				//2 if the ball launches medium, and 3 if the ball launches fast

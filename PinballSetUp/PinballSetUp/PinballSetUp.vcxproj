@@ -165,9 +165,14 @@
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
     <ClInclude Include="pa8.h" />
+    <ClInclude Include="sound.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="OCR-A BT.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="launcher sound.wav" />
+    <Media Include="Pinball Machine Single Flipper Noise.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

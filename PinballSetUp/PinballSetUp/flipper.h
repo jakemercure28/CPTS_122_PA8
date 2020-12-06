@@ -2,6 +2,7 @@
 #define FLIPPER_H
 
 #include <SFML/graphics.hpp>
+#include <SFML/Audio.hpp>
 
 using namespace sf;
 class flipper
@@ -11,6 +12,7 @@ private:
 	ConvexShape flipperShape;
 	float rotation;
 	bool rotDir;
+	Sound clack_sound;
 
 public:
 

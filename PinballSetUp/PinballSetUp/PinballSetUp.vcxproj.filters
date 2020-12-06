@@ -53,10 +53,21 @@
     <ClInclude Include="pa8.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="OCR-A BT.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Pinball Machine Single Flipper Noise.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="launcher sound.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -35,14 +35,14 @@ float flipper::getRotation()
 
 void flipper::rotateUp()
 {
-	flipperShape.rotate(rotDir ? 1 : -1);
-	rotation++;
+	flipperShape.rotate(rotDir ? 10 : -10);
+	rotation+= 10;
 }
 
 void flipper::rotateDown()
 {
-	flipperShape.rotate(rotDir ? -1 : 1);
-	rotation--;
+	flipperShape.rotate(rotDir ? -10 : 10);
+	rotation-= 10;
 }
 void flipper::rotateFlipper(bool upDown)
 {
