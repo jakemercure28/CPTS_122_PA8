@@ -62,6 +62,73 @@ int launcher::moveLauncher(bool upDown)
 	}
 }
 
+int launcher::moveLauncher_slow() {
+	int flag = 0;
+	while (flag == 0) {
+		if (pullback < 30) {
+			pullBack();
+		}
+		if (pullback == 30) {
+			flag = 1;
+		}
+	}
+	while (flag == 1)
+	{
+		if (pullback >= 0) {
+			release();
+		}
+		if (pullback == 0) {
+			return 1;
+		}
+	}
+	return 1;
+}
+
+int launcher::moveLauncher_medium() {
+	int flag = 0;
+	while (flag == 0) {
+		if (pullback < 55) {
+			pullBack();
+		}
+		if (pullback == 55) {
+			flag = 1;
+		}
+	}
+	while (flag == 1)
+	{
+		if (pullback >= 0) {
+			release();
+		}
+		if (pullback == 0) {
+			return 2;
+		}
+	}
+	return 2;
+}
+
+int launcher::moveLauncher_fast()
+{
+	int flag = 0;
+	while (flag == 0) {
+		if (pullback <= MAXPULLBACK) {
+			pullBack();
+		}
+		if (pullback == MAXPULLBACK) {
+			flag = 1;
+		}
+	}
+	while (flag == 1)
+	{
+		if (pullback >= 0) {
+			release();
+		}
+		if (pullback == 0) {
+			return 3;
+		}
+	}
+	return 3;
+}
+
 void launcher::update()
 {
 	launcherShape.setPosition(position);

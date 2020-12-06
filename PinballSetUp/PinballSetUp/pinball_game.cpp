@@ -2,18 +2,31 @@
 
 
 
-int play_game(RenderWindow* window)
+int play_game(RenderWindow* window, int testcase)
 {
+	// Game state variables
 	int user_choice = 0;
 	int count = 0;
 	int flag = 0;
+	int score_count = 0;
+	int launches;
+	int if_launch = 0;
+	int restart = 0;
 
+
+
+
+
+	// Load Font
 	sf::Font MyFont;
 	if (!MyFont.loadFromFile("OCR-A BT.ttf"))
 	{
 		// error...
 	}
-	//create pinball
+
+	// Game Objects
+
+	// Create pinball
 	ball* pinball = new ball(825, 770);
 	//create colliable non moving objects
 	std::vector<ConvexShape> collidableObjects = createCollidableObject();
@@ -21,114 +34,152 @@ int play_game(RenderWindow* window)
 	std::vector<Text> textObjects = createTextObjects(&MyFont);
 
 	//create collidable moving objects
-	int launches = 3;
-	int score_count = 0;
+	FloatRect* boundary = new FloatRect(0, 0, window->getSize().x, window->getSize().y);
 
 	bumper* bumper1 = new bumper(600, 400);
 	bumper* bumper2 = new bumper(400, 200);
-	band_bumper* band_bumper1 = new band_bumper(370, 670, 45, false);
-	band_bumper* band_bumper2 = new band_bumper(700, 660, 135, false);
+	band_bumper* band_bumper1 = new band_bumper(370, 600, 45, false);
+	band_bumper* band_bumper2 = new band_bumper(700, 600, 135, false);
 	flipper* leftFlipper = new flipper(390, 815, 90, false);
 	flipper* rightFlipper = new flipper(700, 815, 90, true);
 	launcher* ballLauncher = new launcher(855, 830);
 
-	sf::RectangleShape score_box1(sf::Vector2f(170.f, 60.f));
-	score_box1.setPosition(55.f, 75.f);
-	score_box1.setFillColor(sf::Color::Red);
+	// Game Play
 
-	sf::RectangleShape score_box2(sf::Vector2f(170.f, 60.f));
-	score_box2.setPosition(60.f, 80.f);
-	score_box2.setFillColor(sf::Color::Blue);
-
-	while (launches > 0)
+	switch (testcase)
 	{
+	case 1:
+		launches = 1;
+		textObjects[10].setString("Test Case 1:\nAutomatic launch at slow speed, manual flipper action. Only 1 launch for test cases.");
+		break;
+	case 2:
+		launches = 1;
+		textObjects[10].setString("Test Case 2:\nAutomatic launch at medium speed, manual flipper action. Only 1 launch for test cases.");
+		break;
+	case 3:
+		launches = 1;
+		textObjects[10].setString("Test Case 3:\nAutomatic launch at fast speed, manual flipper action. Only 1 launch for test cases.");
+		break;
+	default:
 		launches = 3;
-		while (launches > 0) {
+		break;
+	}
 
-			//determine number of launches left to display
+	while (launches > 0) {
 
-			// Keyboard Actions
-			leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
-			rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
-			int if_launch = 0;
+		//determine number of launches left to display
 
-			if (flag == 0)
+		// Keyboard Actions
+		leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
+		rightFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::D));
+
+		if (flag == 0)
+			switch (testcase)
+			{
+			case 1:
+				if_launch = ballLauncher->moveLauncher_slow();
+				break;
+			case 2:
+				if_launch = ballLauncher->moveLauncher_medium();
+				break;
+			case 3:
+				if_launch = ballLauncher->moveLauncher_fast();
+				break;
+			case 0:
+			default:
 				if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
-
-			if ((if_launch) && (ballLauncher->getposition().y == 830)) {
-
-				//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
-				//2 if the ball launches medium, and 3 if the ball launches fast
-				setSetting(pinball, &textObjects[3], if_launch);
-
-				pinball->update();
-				flag = 1;
-			}
-			ballLauncher->update();
-			if (flag == 1) {
-				pinball->collision(leftFlipper->getShape());
-				pinball->collision(rightFlipper->getShape());
-				//pinball->hitboundary2(290, HEIGHT);
-				//pinball->hitboundary2(810, HEIGHT);
-				pinball->collision(bumper1->getShape());
-				pinball->collision(bumper2->getShape());
-
-				pinball->collision(band_bumper1->getShape());
-				pinball->collision(band_bumper2->getShape());
-				pinball->hitboundary(window->getSize().x, window->getSize().y);
-
-				for (int i = 0; i < collidableObjects.size();i++)
-				{
-					pinball->collision(collidableObjects[i]);
-				}
-				pinball->update();
-
-				if ((pinball->getposition().y) > 900) {
-					launches--;
-					setLaunches(&textObjects[2], launches);
-					pinball = new ball(825, 770);
-					flag = 0;
-				}
-
+				break;
 			}
 
-			window->clear();
-			window->draw(pinball->getShape());
-			window->draw(leftFlipper->getShape());
-			window->draw(rightFlipper->getShape());
-			window->draw(ballLauncher->getShape());
+		if ((if_launch) && (ballLauncher->getposition().y == 830)) {
+
+			//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
+			//2 if the ball launches medium, and 3 if the ball launches fast
+			setSetting(pinball, &textObjects[3], if_launch);
+
+			pinball->update();
+			flag = 1;
+		}
+
+		ballLauncher->update();
+
+		if (flag == 1)
+		{
+			pinball->collision(leftFlipper->getShape());
+			pinball->collision(rightFlipper->getShape());
+			score_count += (pinball->collision(bumper1->getShape())) ? 10 : 0;
+			score_count += (pinball->collision(bumper2->getShape())) ? 10 : 0;
+			score_count += (pinball->collision(band_bumper1->getShape())) ? 10 : 0;
+			score_count += (pinball->collision(band_bumper2->getShape())) ? 10 : 0;
+			pinball->hitboundary(*boundary);
+
+			update_score(window, &textObjects[9], score_count);
+
 			for (int i = 0; i < collidableObjects.size();i++)
 			{
-				window->draw(collidableObjects[i]);
+				pinball->collision(collidableObjects[i]);
 			}
-			for (int j = 0; j < textObjects.size();j++)
-			{
-				window->draw(textObjects[j]);
+			pinball->update();
+
+			if ((pinball->getposition().y) > 900) {
+				launches--;
+				setLaunches(&textObjects[2], launches);
+				pinball = new ball(825, 770);
+				flag = 0;
 			}
 
-			//window->draw(score_box2);
-			//window->draw(score_box1);
-			window->draw(bumper1->getShape());
-			window->draw(bumper2->getShape());
-			window->draw(band_bumper1->getShape());
-			window->draw(band_bumper2->getShape());
-			window->display();
-			//count = 1;
 		}
-		if (launches == 0) {
-			window->clear();
-			textObjects[2].setCharacterSize(20);
-			textObjects[2].setString("You have run out of launches!\nClick anywhere to go back to main menu.");
 
-			window->draw(textObjects[2]);
-			window->display();
-			if (Mouse::isButtonPressed(sf::Mouse::Left))
+		window->clear();
+		for (int i = 0; i < collidableObjects.size();i++)
+			window->draw(collidableObjects[i]);
+		for (int j = 0; j < textObjects.size();j++)
+			window->draw(textObjects[j]);
+
+		window->draw(pinball->getShape());
+		window->draw(leftFlipper->getShape());
+		window->draw(rightFlipper->getShape());
+		window->draw(ballLauncher->getShape());
+		window->draw(bumper1->getShape());
+		window->draw(bumper2->getShape());
+		window->draw(band_bumper1->getShape());
+		window->draw(band_bumper2->getShape());
+		window->display();
+	}
+
+	// End of game
+	if (launches == 0) {
+		window->clear();
+		textObjects[2].setCharacterSize(20);
+
+
+		switch (testcase)
+		{
+		case 1:
+		case 2:
+		case 3:
+			textObjects[2].setString("The test case is over!\nPress R to go back to main menu.\nPress Escape to quit the game.");
+			break;
+		default:
+			textObjects[2].setString("You have run out of launches!\nClick anywhere to go back to main menu.");
+			break;
+		}
+
+		window->draw(textObjects[2]);
+		window->display();
+		do {
+			if (Keyboard::isKeyPressed(sf::Keyboard::R))
 			{
 				user_choice = 0;
 				count = 0;
-				window->clear();
+				launches = 3;
+				restart = 1;
+				if_launch = 0;
+				//window.clear();
 			}
-		}
+			else if ((Keyboard::isKeyPressed(sf::Keyboard::Escape)))
+				window->close();
+		} while (restart == 0);
 	}
 	return 0;
 }
@@ -137,11 +188,11 @@ void setLaunches(Text* launch, int launches)
 {
 	switch (launches)
 	{
-	case 1: launch->setString("1");
+	case 1: launch->setString("0");
 		break;
-	case 2: launch->setString("2");
+	case 2: launch->setString("1");
 		break;
-	case 3: launch->setString("3");
+	case 3: launch->setString("2");
 		break;
 	default: launch->setString("#");
 	}
@@ -172,8 +223,9 @@ std::vector<ConvexShape> createCollidableObject()
 
 	ConvexRect* right_rectangle = new ConvexRect(800, 175, 10, 750);
 	ConvexRect* left_rectangle = new ConvexRect(280, 0, 10, 715);
-	ConvexRect* scorebox1 = new ConvexRect(55, 75, 170, 60,0,Color::Red);
-	ConvexRect* scorebox2 = new ConvexRect(60, 80, 170, 60,0,Color::Blue);
+	ConvexRect* scorebox1 = new ConvexRect(55, 75, 170, 60, 0, Color::Red);
+	ConvexRect* scorebox2 = new ConvexRect(60, 80, 170, 60, 0, Color::Blue);
+	ConvexRect* line_that_blocks_the_ball_from_the_launcher = new ConvexRect(800, 0, 10, 180);
 
 	sf::ConvexShape right_corner;
 	right_corner.setPointCount(3);
@@ -217,6 +269,7 @@ std::vector<ConvexShape> createCollidableObject()
 
 	Objects.push_back(right_rectangle->getShape());
 	Objects.push_back(left_rectangle->getShape());
+	//Objects.push_back(line_that_blocks_the_ball_from_the_launcher->getShape());
 	Objects.push_back(left_bot_corner);
 	Objects.push_back(left_triangle);
 	Objects.push_back(left_corner);
@@ -295,6 +348,18 @@ std::vector<Text> createTextObjects(Font* MyFont)
 	scoreshadow.setFillColor(sf::Color::Blue);
 	scoreshadow.setPosition(50.f, 15.f);
 
+	Text score_counter;
+	score_counter.setFont(*MyFont);
+	score_counter.setCharacterSize(50);
+	score_counter.setFillColor(sf::Color::White);
+	score_counter.setPosition(80.f, 70.f);
+
+	Text test_case_description;
+	test_case_description.setFont(*MyFont);
+	test_case_description.setCharacterSize(18);
+	test_case_description.setFillColor(sf::Color::White);
+	test_case_description.setPosition(20.f, 900.f);
+
 	texts.push_back(launch_setting);
 	texts.push_back(launches_left);
 	texts.push_back(launches_display);
@@ -304,7 +369,14 @@ std::vector<Text> createTextObjects(Font* MyFont)
 	texts.push_back(titleshadow);
 	texts.push_back(score);
 	texts.push_back(scoreshadow);
+	texts.push_back(score_counter);
+	texts.push_back(test_case_description);
 
 
 	return texts;
+}
+
+void update_score(RenderWindow* window, Text* score_counter, int score_count)
+{
+	score_counter->setString(std::to_string(score_count));
 }

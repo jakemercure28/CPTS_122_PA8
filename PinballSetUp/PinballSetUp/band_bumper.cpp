@@ -5,7 +5,6 @@ band_bumper::band_bumper(float initX, float initY, float initRotation, bool acti
 	position.x = initX;
 	position.y = initY;
 	is_activated = active;
-	rotation = 0;
 
 	band_bumper_shape.setPointCount(6);
 	band_bumper_shape.setPoint(0, sf::Vector2f(0, 0));

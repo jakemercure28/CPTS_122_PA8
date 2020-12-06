@@ -1,7 +1,7 @@
 #ifndef BALL_H
 #define BALL_H
 #define PI 3.14159265
-#define REBOUND 1.0000f
+#define REBOUND 0.99f
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -20,10 +20,10 @@ public:
 	void ApplyGravity(Vector2f gravity);
 	Vector2f getVelocity();
 	Vector2f getOrigin();
-	void hitboundary(int width, int height);
+	void hitboundary(FloatRect bound);
 	void update();
-	void collision(CircleShape shape);
-	void collision(ConvexShape shape);
+	bool collision(CircleShape shape);
+	bool collision(ConvexShape shape);
 	void launch(int setting);
 	Vector2f rotatePoint(Vector2f point, float angle);
 	float distance(Vector2f point1, Vector2f point2);

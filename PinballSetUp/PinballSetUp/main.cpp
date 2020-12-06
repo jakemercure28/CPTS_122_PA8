@@ -36,28 +36,20 @@ int main()
 			case 0:
 			{
 				game_state = menu(&window);
-			break;
+				break;
 			}
 			case 1:
 				// play game
 				game_state = play_game(&window);
 				break;
 			case 2:
-				// test case 1
-				break;
 			case 3:
-				// test case 2
-				break;
 			case 4:
-				// test case 3
-				break;
 			case 5:
-				// test case 4
-				break;
 			case 6:
-				// test case 5
+				// test case x
+				game_state = play_game(&window, game_state - 1);
 				break;
-			break;
 			case 7:
 			{
 				//exit game

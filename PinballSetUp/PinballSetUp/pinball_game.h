@@ -12,10 +12,11 @@
 
 using namespace sf;
 
-int play_game(RenderWindow*);
+int play_game(RenderWindow*,int testCase=0);
 void setLaunches(Text*, int);
 void setSetting(ball*,Text*, int);
 std::vector<ConvexShape> createCollidableObject();
 std::vector<Text> createTextObjects(Font*);
+void update_score(RenderWindow* window, Text* score_counter, int score_count);
 
 #endif

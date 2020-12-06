@@ -37,7 +37,7 @@ Vector2f ball::getVelocity()
 	return Velocity;
 }
 
-void ball::collision(ConvexShape shape)
+bool ball::collision(ConvexShape shape)
 {
 	Vector2f originA = getOrigin();
 
@@ -55,7 +55,7 @@ void ball::collision(ConvexShape shape)
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
 			Velocity = Velocity - int1;
-			return;
+			return true;
 		}
 	}
 
@@ -81,20 +81,24 @@ void ball::collision(ConvexShape shape)
 		{
 			continue;
 		}
+		else
+		{
 		float trueDistance = distance(originA, closestPoint);
 		if (trueDistance <= ballShape.getRadius())
 		{
 			Vector2f normal = Vector2f((originA.x - closestPoint.x) / trueDistance, (originA.y - closestPoint.y) / trueDistance);
 			float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 			Vector2f int1 = (2 * ddotn) * normal;
-			Velocity = REBOUND *(Velocity - int1);
-			return;
+			Velocity = REBOUND * (Velocity - int1);
+			return true;
+		}
 		}
 	}
+	return false;
 
 }
 
-void ball::collision(CircleShape shape)
+bool ball::collision(CircleShape shape)
 {
 
 	Vector2f originA = getOrigin();
@@ -117,29 +121,31 @@ void ball::collision(CircleShape shape)
 
 		float ddotn = normal.x * Velocity.x + normal.y * Velocity.y;
 		Vector2f  int1 = (2 * ddotn) * normal;
-     		Velocity = REBOUND * (Velocity - int1);
+		Velocity = REBOUND * (Velocity - int1);
+		return true;
 	}
+	return false;
 }
 
-void ball::hitboundary(int width, int height)
+void ball::hitboundary(FloatRect bound)
 {
-	if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
+	if (position.x <= bound.left || position.x >= (bound.left + bound.width))
 		Velocity.x *= -REBOUND;
-
-	if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
+	if (position.y <= bound.left || position.y >= (bound.top + bound.height))
 		Velocity.y *= -REBOUND;
 }
 
-//void ball::hitboundary2(int width, int height)
-//{
-//	if ((((position.x) < (800)) || ((position.x) > (820))) && ((position.y) > (100))) {
-//		if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
-//			Velocity.x *= -1.;
-//
-//		if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
-//			Velocity.y *= -1.;
-//	}
-//}
+void ball::hitboundary2(int width, int height)
+{
+	if ((((position.x) < (800)) || ((position.x) > (820))) && ((position.y) > (100)))
+	{
+		if ((position.x) >= (width - 2 * ballShape.getRadius()) || position.x <= 0)
+			Velocity.x *= -1.;
+
+		if (position.y >= (height - 2 * ballShape.getRadius()) || position.y <= 0)
+			Velocity.y *= -1.;
+	}
+}
 
 
 void ball::update()
@@ -151,16 +157,18 @@ void ball::update()
 
 void ball::launch(int setting)
 {
-	float gravity = 0.0f;
-	if (setting == 1) {
-		gravity = -0.01f;
+	Velocity.x = 0;
+	Velocity.y = 0;
 
+	float gravity = 0.01f;
+	if (setting == 1) {
+		Velocity.y = -1;
 	}
 	else if (setting == 2) {
-		gravity = -0.02f;
+		Velocity.y = -5;
 	}
 	else if (setting == 3) {
-		gravity = -0.04f;
+		Velocity.y = -20;
 	}
 
 	ApplyGravity(Vector2f(0.f, gravity));

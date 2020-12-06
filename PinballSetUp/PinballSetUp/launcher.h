@@ -17,6 +17,9 @@ public:
 	Vector2f getposition();
 	ConvexShape getShape();
 	int moveLauncher(bool);
+	int moveLauncher_slow();
+	int moveLauncher_medium();
+	int moveLauncher_fast();
 	void pullBack();
 	void release();
 	void update();
