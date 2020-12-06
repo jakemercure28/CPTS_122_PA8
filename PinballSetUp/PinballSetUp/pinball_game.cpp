@@ -10,11 +10,10 @@ int play_game(RenderWindow* window, int testcase)
 	int flag = 0;
 	int score_count = 0;
 	int launches;
+	int max_pull_back;
 	int if_launch = 0;
+	int if_launch_prev;
 	int restart = 0;
-
-
-
 
 
 	// Load Font
@@ -44,6 +43,8 @@ int play_game(RenderWindow* window, int testcase)
 	flipper* rightFlipper = new flipper(700, 815, 90, true);
 	launcher* ballLauncher = new launcher(855, 830);
 
+	//launch count text object
+
 	// Game Play
 
 	switch (testcase)
@@ -65,9 +66,11 @@ int play_game(RenderWindow* window, int testcase)
 		break;
 	}
 
-	while (launches > 0) {
+	max_pull_back = 0;
 
+	while (launches > 0) {
 		//determine number of launches left to display
+		
 
 		// Keyboard Actions
 		leftFlipper->rotateFlipper(Keyboard::isKeyPressed(Keyboard::A));
@@ -78,26 +81,38 @@ int play_game(RenderWindow* window, int testcase)
 			{
 			case 1:
 				if_launch = ballLauncher->moveLauncher_slow();
+				max_pull_back = 0;
 				break;
 			case 2:
 				if_launch = ballLauncher->moveLauncher_medium();
+				max_pull_back = 0;
 				break;
 			case 3:
 				if_launch = ballLauncher->moveLauncher_fast();
+				max_pull_back = 0;
 				break;
 			case 0:
 			default:
-				if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space));
-				break;
+				//if_launch_prev = if_launch;
+				if_launch = ballLauncher->moveLauncher(Keyboard::isKeyPressed(Keyboard::Space), &max_pull_back);
+				
 			}
-
 		if ((if_launch) && (ballLauncher->getposition().y == 830) && !flag) 
 		{
-
+			if (max_pull_back) {
+				if (max_pull_back <= 30)
+					if_launch = 1;
+				else if (max_pull_back <= 55)
+					if_launch = 2;
+				else if (max_pull_back > 55)
+					if_launch = 3;
+			}
+			max_pull_back = 0;
 			//if_launch is 0 if the ball doesn't launch, 1 if the ball launches slowly,
 			//2 if the ball launches medium, and 3 if the ball launches fast
 			setSetting(pinball, &textObjects[3], if_launch);
-
+			launches--;
+			setLaunches(&textObjects[2], launches);
 			pinball->update();
 			flag = 1;
 		}
@@ -123,8 +138,7 @@ int play_game(RenderWindow* window, int testcase)
 			pinball->update();  
 
 			if ((pinball->getposition().y) > 900) {
-				launches--;
-				setLaunches(&textObjects[2], launches);
+				
 				pinball = new ball(825, 770);
 				flag = 0;
 			}
@@ -162,7 +176,7 @@ int play_game(RenderWindow* window, int testcase)
 			textObjects[2].setString("The test case is over!\nPress R to go back to main menu.\nPress Escape to quit the game.");
 			break;
 		default:
-			textObjects[2].setString("You have run out of launches!\nClick anywhere to go back to main menu.");
+			textObjects[2].setString("You have run out of launches!\nPress R to go back to main menu\nPress Escape to quit the game.");
 			break;
 		}
 
@@ -176,6 +190,7 @@ int play_game(RenderWindow* window, int testcase)
 				launches = 3;
 				restart = 1;
 				if_launch = 0;
+				max_pull_back = 0;
 				//window.clear();
 			}
 			else if ((Keyboard::isKeyPressed(sf::Keyboard::Escape)))
@@ -208,11 +223,11 @@ void setSetting(ball* pinball, Text* setting_display, int if_launch)
 		setting_display->setString("Slow");
 		break;
 	case 2:
-		pinball->setVelocity(0.0, -5.0);
+		pinball->setVelocity(0.0, -4.5); //4.5 speed fixes the collision issue
 		setting_display->setString("Medium");
 		break;
 	case 3:
-		pinball->setVelocity(0.0, -10.0);
+		pinball->setVelocity(0.0, -8.0);
 		setting_display->setString("Fast");
 		break;
 	}
@@ -277,8 +292,8 @@ std::vector<ConvexShape> createCollidableObject()
 	Objects.push_back(right_corner);
 	Objects.push_back(right_triangle);
 	Objects.push_back(right_bot_corner);
-	Objects.push_back(scorebox1->getShape());
 	Objects.push_back(scorebox2->getShape());
+	Objects.push_back(scorebox1->getShape());
 
 	return Objects;
 }
@@ -303,7 +318,7 @@ std::vector<Text> createTextObjects(Font* MyFont)
 
 	Text launches_display;
 	launches_display.setFont(*MyFont);
-	launches_display.setString("3");
+	//launches_display.setString("3");
 	launches_display.setCharacterSize(45);
 	launches_display.setFillColor(sf::Color::White);
 	launches_display.setPosition(240.f, 550.f);
@@ -366,10 +381,10 @@ std::vector<Text> createTextObjects(Font* MyFont)
 	texts.push_back(launches_display);
 	texts.push_back(setting_display);
 	texts.push_back(game_rules);
-	texts.push_back(title);
 	texts.push_back(titleshadow);
-	texts.push_back(score);
+	texts.push_back(title);
 	texts.push_back(scoreshadow);
+	texts.push_back(score);
 	texts.push_back(score_counter);
 	texts.push_back(test_case_description);
 

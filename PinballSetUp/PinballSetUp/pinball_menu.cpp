@@ -126,28 +126,37 @@ void drawMenu(RenderWindow* window)
 
 int check_mouse_pos(Vector2i mouse_pos)
 {
-	if (mouse_pos.x > 300 && mouse_pos.x < 650)
-	{
-		// 1 - start game
-		if (mouse_pos.y > 250 && mouse_pos.y < 300)
-			return 1;
-		// 2 - test case 1
-		if (mouse_pos.y > 330 && mouse_pos.y < 380)
-			return 2;
-		// 3 - test case 2
-		if (mouse_pos.y > 410 && mouse_pos.y < 460)
-			return 3;
-		// 4 - test case 3
-		if (mouse_pos.y > 490 && mouse_pos.y < 540)
-			return 4;
-		// 5 - test case 4
-		if (mouse_pos.y > 570 && mouse_pos.y < 620)
-			return 5;
-		// 6 - test case 5
-		if (mouse_pos.y > 650 && mouse_pos.y < 700)
-			return 6;
-		// 7 - exit game
-		if (mouse_pos.y > 730 && mouse_pos.y < 780)
-			return 7;
+	//1, start game option
+	if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 250) && (mouse_pos.y < 300)))) {
+		return 1;
 	}
+	//2, test case 1 option
+	else if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 330) && (mouse_pos.y < 380)))) {
+		return 2;
+
+	}
+	//3, test case 2 option
+	else if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 410) && (mouse_pos.y < 460)))) {
+		return 3;
+	}
+	//4, test case 3 option
+	else if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 490) && (mouse_pos.y < 540)))) {
+		return 4;
+	}
+	//5, test case 4 option
+	else if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 570) && (mouse_pos.y < 620)))) {
+		return 5;
+	}
+
+	//6, test case 5 option
+	else if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 650) && (mouse_pos.y < 700)))) {
+		return 6;
+	}
+
+	//7, exit option
+	else if ((((mouse_pos.x > 300) && (mouse_pos.x < 650)) && ((mouse_pos.y > 730) && (mouse_pos.y < 780)))) {
+		return 7;
+	}
+	else
+		return 0;
 }

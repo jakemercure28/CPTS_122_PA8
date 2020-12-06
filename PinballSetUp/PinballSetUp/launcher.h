@@ -16,7 +16,7 @@ public:
 	launcher(float initX, float initY);
 	Vector2f getposition();
 	ConvexShape getShape();
-	int moveLauncher(bool);
+	int moveLauncher(bool upDown, int* max_pull_back);
 	int moveLauncher_slow();
 	int moveLauncher_medium();
 	int moveLauncher_fast();
