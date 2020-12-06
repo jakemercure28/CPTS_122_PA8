@@ -9,10 +9,6 @@
 
 int main()
 {
-	
-	sound_manager clack_sound("Pinball Machine Single Flipper Noise.wav");
-	sound_manager launcher_sound("launcher sound.wav");
-	
 
 	sf::ContextSettings settings;
 	// Anti Aliasing Enabled
