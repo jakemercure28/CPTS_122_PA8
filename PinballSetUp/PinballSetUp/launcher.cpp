@@ -1,5 +1,6 @@
 #include "launcher.h"
 
+// launcher shape constructor creates the shape and then moves it to where the user sets with initXY
 launcher::launcher(float initX, float initY)
 {
 	position.x = initX;
@@ -18,6 +19,7 @@ launcher::launcher(float initX, float initY)
 	launcherShape.move(position);
 	launcherShape.setFillColor(sf::Color::Red);
 }
+
 
 ConvexShape launcher::getShape()
 {
@@ -38,6 +40,7 @@ void launcher::release()
 
 int launcher::moveLauncher(bool upDown, int* max_pull_back)
 {
+	// moves the launcher position up and down 
 	int a;
 	if (upDown)
 	{

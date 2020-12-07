@@ -13,11 +13,13 @@ private:
     std::string file;
 
 public:
+    // baisc sound file setter
     sound_manager(std::string input_file)
     {
         file = input_file;
     }
 
+    // initializes sound file to play
     void init() 
     {
         buffer.loadFromFile(file);

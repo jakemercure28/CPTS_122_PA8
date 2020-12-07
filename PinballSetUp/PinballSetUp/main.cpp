@@ -9,15 +9,17 @@
 
 int main()
 {
-
+	// Settings 
 	sf::ContextSettings settings;
 	// Anti Aliasing Enabled
 	settings.antialiasingLevel = 8;
 
+	// sets render window to WIDTH x HEIGHT size and antialiasing is set to make it look pretty
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Pinball SetUp", sf::Style::Close | sf::Style::Titlebar, settings);
 	window.setFramerateLimit(180);
 	//Game State 
 	int game_state = 0;
+	// while loop only exits when the window is closed
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -29,12 +31,12 @@ int main()
 					break;
 		}
 
-
+		// checks the returned value of menu or play_game and moves to the needed gamestate.
 		while (game_state != -1)
 		{
 			switch (game_state)
 			{
-			case 0:
+			case 0: // initial game state
 			{
 				game_state = menu(&window);
 				break;

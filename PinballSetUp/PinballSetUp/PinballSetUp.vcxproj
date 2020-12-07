@@ -172,7 +172,6 @@
     <ClInclude Include="convex_shape.h" />
     <ClInclude Include="flipper.h" />
     <ClInclude Include="launcher.h" />
-    <ClInclude Include="pa8.h" />
     <ClInclude Include="pinball_game.h" />
     <ClInclude Include="pinball_menu.h" />
     <ClInclude Include="sound.h" />
