@@ -9,7 +9,9 @@ private:
 	Vector2f position;
 
 public:
+	// Constructor
 	ConvexRect(float initX, float initY,float width, float height,float rotation=0,const Color=Color::White);
+	// Getters
 	Vector2f getposition();
 	virtual ConvexShape getShape();
 };

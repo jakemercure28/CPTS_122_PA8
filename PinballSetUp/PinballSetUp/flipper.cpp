@@ -1,6 +1,6 @@
 #include "flipper.h"
 
-
+// flipper shape constructor
 flipper::flipper(float initX, float initY, float initRot, bool direction)
 {
 	position.x = initX;
@@ -34,19 +34,23 @@ float flipper::getRotation()
 	return flipperShape.getRotation();
 }
 
+
 void flipper::rotateUp()
 {
+	// flipper will rotate up depending on the initial rotation direction on construction
 	flipperShape.rotate(rotDir ? SPEED : -SPEED);
 	rotation += SPEED;
 }
 
 void flipper::rotateDown()
 {
+	// flipper will rotate up depending on the initial rotation direction on construction
 	flipperShape.rotate(rotDir ? -SPEED : SPEED);
 	rotation -= SPEED;
 }
 void flipper::rotateFlipper(bool upDown)
 {
+	// limits the flipper to rotating with +-30 degrees of its initial rotation
 	if (upDown)
 	{
 		if (rotation <= 30)
