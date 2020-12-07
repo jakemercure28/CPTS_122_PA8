@@ -99,5 +99,14 @@
     <Media Include="launcher sound.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="open_sound_effect.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="swoosh.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="bump_sound.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

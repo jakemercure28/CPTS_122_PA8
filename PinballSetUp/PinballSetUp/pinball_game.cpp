@@ -3,9 +3,22 @@
 
 int play_game(RenderWindow* window, int testcase)
 {
-	//sounds
+	//sound variables
 	sound_manager clack_sound("Pinball Machine Single Flipper Noise.wav");
 	sound_manager launcher_sound("launcher sound.wav");
+	sound_manager opening_sound("open_sound_effect.wav");
+	sound_manager ball_drop_sound("swoosh.wav");
+
+
+	// play opening sound
+	switch (testcase)
+	{
+	case 4:
+		break;
+	default:
+		opening_sound.init();
+		break;
+	}
 
 	// Game state variables
 	int user_choice = 0;
@@ -34,6 +47,10 @@ int play_game(RenderWindow* window, int testcase)
 	std::vector<ConvexShape> collidableObjects = createCollidableObject();
 	//create text Objects
 	std::vector<Text> textObjects = createTextObjects(&MyFont);
+	//create launcher objects
+	std::vector<ConvexShape>launcher_setting_lines = LauncherSettingsLines();
+	//create launcher settings text
+	std::vector<Text> launcherSidetext = createLauncherTextMarkers(&MyFont);
 
 	//create collidable moving objects
 	FloatRect* boundary = new FloatRect(0, 0, window->getSize().x, window->getSize().y);
@@ -64,6 +81,14 @@ int play_game(RenderWindow* window, int testcase)
 		launches = 1;
 		textObjects[10].setString("Test Case 3:\nAutomatic launch at fast speed, manual flipper action. Only 1 launch for test cases.");
 		break;
+	case 4:
+		launches = 1;
+		textObjects[10].setString("Test Case 4:\nNo AUDIO, Manual launch, manual flipper action. Only 1 launch for test cases.");
+		break;
+	case 5:
+		launches = 1;
+		textObjects[10].setString("Test Case 5:\nAUDIO INCLUDED, Manual launch, manual flipper action. Only 1 launch for test cases.");
+		break;
 	default:
 		launches = 3;
 		break;
@@ -79,14 +104,28 @@ int play_game(RenderWindow* window, int testcase)
 		if (Keyboard::isKeyPressed(Keyboard::A))
 		{
 			leftFlipper->rotateFlipper(true);
-			clack_sound.init();
+			switch (testcase)
+			{
+			case 4:
+				break;
+			default:
+				clack_sound.init();
+				break;
+			}
 		}
 		else leftFlipper->rotateFlipper(false);
 
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 			rightFlipper->rotateFlipper(true);
-			clack_sound.init();
+			switch (testcase)
+			{
+			case 4:
+				break;
+			default:
+				clack_sound.init();
+				break;
+			}
 		}
 		else rightFlipper->rotateFlipper(false);
 
@@ -111,7 +150,14 @@ int play_game(RenderWindow* window, int testcase)
 				if (Keyboard::isKeyPressed(Keyboard::Space))
 				{
 					if_launch = ballLauncher->moveLauncher(true, &max_pull_back);
-					launcher_sound.init();
+					switch (testcase)
+					{
+					case 4:
+						break;
+					default:
+						launcher_sound.init();
+						break;
+					}
 				}
 				else if_launch = ballLauncher->moveLauncher(false, &max_pull_back);
 
@@ -155,8 +201,18 @@ int play_game(RenderWindow* window, int testcase)
 			}
 			pinball->update();
 
+
 			if ((pinball->getposition().y) > 900) {
 				launches--;
+				switch (testcase)
+				{
+				case 4:
+					break;
+				default:
+					ball_drop_sound.init();
+					break;
+				}
+
 				pinball = new ball(825, 770);
 				flag = 0;
 			}
@@ -168,6 +224,11 @@ int play_game(RenderWindow* window, int testcase)
 			window->draw(collidableObjects[i]);
 		for (int j = 0; j < textObjects.size();j++)
 			window->draw(textObjects[j]);
+		for (int k = 0; k < launcher_setting_lines.size(); k++)
+			window->draw(launcher_setting_lines[k]);
+		for (int l = 0; l < launcherSidetext.size(); l++)
+			window->draw(launcherSidetext[l]);
+		
 
 		window->draw(pinball->getShape());
 		window->draw(leftFlipper->getShape());
@@ -408,6 +469,51 @@ std::vector<Text> createTextObjects(Font* MyFont)
 
 
 	return texts;
+}
+
+std::vector<Text> createLauncherTextMarkers(Font* MyFont)
+{
+	std::vector<Text> texts;
+
+	Text slow;
+	slow.setFont(*MyFont);
+	slow.setString("Slow");
+	slow.setCharacterSize(15);
+	slow.setFillColor(sf::Color::Cyan);
+	slow.setPosition(755.f, 835.f);
+
+	Text medium;
+	medium.setFont(*MyFont);
+	medium.setString("Medium");
+	medium.setCharacterSize(15);
+	medium.setFillColor(sf::Color::Magenta);
+	medium.setPosition(740.f, 860.f);
+
+	Text fast;
+	fast.setFont(*MyFont);
+	fast.setString("Fast");
+	fast.setCharacterSize(15);
+	fast.setFillColor(sf::Color::Yellow);
+	fast.setPosition(755.f, 890.f);
+
+	texts.push_back(slow);
+	texts.push_back(medium);
+	texts.push_back(fast);
+
+	return texts;
+}
+
+std::vector<ConvexShape> LauncherSettingsLines()
+{
+	std::vector<ConvexShape> Objects;
+	ConvexRect* slow_marker = new ConvexRect(800, 830, 10, 30, 0,Color::Cyan);
+	ConvexRect* medium_marker = new ConvexRect(800, 860, 10, 25, 0, Color::Magenta);
+	ConvexRect* fast_marker = new ConvexRect(800, 885, 10, 20, 0, Color::Yellow);
+
+	Objects.push_back(slow_marker->getShape());
+	Objects.push_back(medium_marker->getShape());
+	Objects.push_back(fast_marker->getShape());
+	return Objects;
 }
 
 void update_score(RenderWindow* window, Text* score_counter, int score_count)
