@@ -47,21 +47,16 @@ int play_game(RenderWindow* window, int testcase)
 	std::vector<ConvexShape> collidableObjects = createCollidableObject();
 	//create text Objects
 	std::vector<Text> textObjects = createTextObjects(&MyFont);
-	//create launcher objects
-	std::vector<ConvexShape>launcher_setting_lines = LauncherSettingsLines();
-	//create launcher settings text
-	std::vector<Text> launcherSidetext = createLauncherTextMarkers(&MyFont);
 
 	//create collidable moving objects
 	FloatRect* boundary = new FloatRect(0, 0, window->getSize().x, window->getSize().y);
-
 	bumper* bumper1 = new bumper(600, 400);
 	bumper* bumper2 = new bumper(400, 200);
 	band_bumper* band_bumper1 = new band_bumper(370, 600, 45, false);
 	band_bumper* band_bumper2 = new band_bumper(700, 600, 135, false);
 	flipper* leftFlipper = new flipper(390, 815, 90, false);
 	flipper* rightFlipper = new flipper(700, 815, 90, true);
-	launcher* ballLauncher = new launcher(855, 830);
+	launcher* ballLauncher = new launcher(855, 830);	
 
 	//launch count text object
 
@@ -96,11 +91,13 @@ int play_game(RenderWindow* window, int testcase)
 
 	max_pull_back = 0;
 
+	// main game play functions checks and draws the game play area and checks for key presses
 	while (launches > 0) {
 		//determine number of launches left to display
 
 
 		// Keyboard Actions
+		// left flipper keyboard action
 		if (Keyboard::isKeyPressed(Keyboard::A))
 		{
 			leftFlipper->rotateFlipper(true);
@@ -115,6 +112,7 @@ int play_game(RenderWindow* window, int testcase)
 		}
 		else leftFlipper->rotateFlipper(false);
 
+		// right flipper action
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 			rightFlipper->rotateFlipper(true);
@@ -129,6 +127,7 @@ int play_game(RenderWindow* window, int testcase)
 		}
 		else rightFlipper->rotateFlipper(false);
 
+		// Launcher action 
 		if (flag == 0)
 			switch (testcase)
 			{
@@ -162,6 +161,8 @@ int play_game(RenderWindow* window, int testcase)
 				else if_launch = ballLauncher->moveLauncher(false, &max_pull_back);
 
 			}
+
+		// after releasing the launcher this only launches the ball once the launcher gets to its original position
 		if ((if_launch) && (ballLauncher->getposition().y == 830) && !flag)
 		{
 			if (max_pull_back) {
@@ -181,8 +182,10 @@ int play_game(RenderWindow* window, int testcase)
 			flag = 1;
 		}
 
+		// updates the position of the ball launcher each frame
 		ballLauncher->update();
 
+		// once the ball has been launched we start to calculate the collisions with objects
 		if (flag == 1)
 		{
 			pinball->collision(leftFlipper->getShape());
@@ -193,6 +196,7 @@ int play_game(RenderWindow* window, int testcase)
 			score_count += (pinball->collision(band_bumper2->getShape())) ? 10 : 0;
 			pinball->hitboundary(*boundary);
 
+			// updates the scorecount text object directly 
 			update_score(window, &textObjects[9], score_count);
 
 			for (int i = 0; i < collidableObjects.size();i++)
@@ -202,6 +206,8 @@ int play_game(RenderWindow* window, int testcase)
 			pinball->update();
 
 
+			// if the ball has reached the bottom of the play area
+			// a sound is played except in test case 4
 			if ((pinball->getposition().y) > 900) {
 				launches--;
 				switch (testcase)
@@ -219,17 +225,12 @@ int play_game(RenderWindow* window, int testcase)
 
 		}
 
+		// All objects are cleared and redrawn to the screen
 		window->clear();
 		for (int i = 0; i < collidableObjects.size();i++)
 			window->draw(collidableObjects[i]);
 		for (int j = 0; j < textObjects.size();j++)
 			window->draw(textObjects[j]);
-		for (int k = 0; k < launcher_setting_lines.size(); k++)
-			window->draw(launcher_setting_lines[k]);
-		for (int l = 0; l < launcherSidetext.size(); l++)
-			window->draw(launcherSidetext[l]);
-		
-
 		window->draw(pinball->getShape());
 		window->draw(leftFlipper->getShape());
 		window->draw(rightFlipper->getShape());
@@ -241,12 +242,12 @@ int play_game(RenderWindow* window, int testcase)
 		window->display();
 	}
 
-	// End of game
+	// End of game once last ball is lost
 	if (launches == 0) {
 		window->clear();
 		textObjects[2].setCharacterSize(20);
 
-
+		// final text is set
 		switch (testcase)
 		{
 		case 1:
@@ -259,6 +260,7 @@ int play_game(RenderWindow* window, int testcase)
 			break;
 		}
 
+		// draw final text and check for user input
 		window->draw(textObjects[2]);
 		window->display();
 		do {
@@ -279,8 +281,10 @@ int play_game(RenderWindow* window, int testcase)
 	return 0;
 }
 
+
 void setLaunches(Text* launch, int launches)
 {
+	// depending on the amount of launches left sets the text for flaunches left
 	switch (launches)
 	{
 	case 1: launch->setString("0");
@@ -295,6 +299,7 @@ void setLaunches(Text* launch, int launches)
 
 void setSetting(ball* pinball, Text* setting_display, int if_launch)
 {
+	// artifically launches the ball from the launcher.
 	switch (if_launch)
 	{
 	case 1:
@@ -314,6 +319,7 @@ void setSetting(ball* pinball, Text* setting_display, int if_launch)
 
 std::vector<ConvexShape> createCollidableObject()
 {
+	// creates a vector to contain all objects that do not need to move but are collidable
 	std::vector<ConvexShape> Objects;
 
 	ConvexRect* right_rectangle = new ConvexRect(800, 175, 10, 750);
@@ -361,10 +367,13 @@ std::vector<ConvexShape> createCollidableObject()
 	right_bot_corner.setPoint(1, sf::Vector2f(810.f, 813.f));
 	right_bot_corner.setPoint(2, sf::Vector2f(696.8f, 813.14f));
 	right_bot_corner.setFillColor(sf::Color::Red);
+	ConvexRect* slow_marker = new ConvexRect(800, 830, 10, 30, 0, Color::Cyan);
+	ConvexRect* medium_marker = new ConvexRect(800, 860, 10, 25, 0, Color::Magenta);
+	ConvexRect* fast_marker = new ConvexRect(800, 885, 10, 20, 0, Color::Yellow);
+
 
 	Objects.push_back(right_rectangle->getShape());
 	Objects.push_back(left_rectangle->getShape());
-	//Objects.push_back(line_that_blocks_the_ball_from_the_launcher->getShape());
 	Objects.push_back(left_bot_corner);
 	Objects.push_back(left_triangle);
 	Objects.push_back(left_corner);
@@ -373,12 +382,16 @@ std::vector<ConvexShape> createCollidableObject()
 	Objects.push_back(right_bot_corner);
 	Objects.push_back(scorebox2->getShape());
 	Objects.push_back(scorebox1->getShape());
+	Objects.push_back(slow_marker->getShape());
+	Objects.push_back(medium_marker->getShape());
+	Objects.push_back(fast_marker->getShape());
 
 	return Objects;
 }
 
 std::vector<Text> createTextObjects(Font* MyFont)
 {
+	// all text to be drawn on the screen are created here
 	std::vector<Text> texts;
 
 	Text launch_setting;
@@ -455,26 +468,6 @@ std::vector<Text> createTextObjects(Font* MyFont)
 	test_case_description.setFillColor(sf::Color::White);
 	test_case_description.setPosition(20.f, 900.f);
 
-	texts.push_back(launch_setting);
-	texts.push_back(launches_left);
-	texts.push_back(launches_display);
-	texts.push_back(setting_display);
-	texts.push_back(game_rules);
-	texts.push_back(titleshadow);
-	texts.push_back(title);
-	texts.push_back(scoreshadow);
-	texts.push_back(score);
-	texts.push_back(score_counter);
-	texts.push_back(test_case_description);
-
-
-	return texts;
-}
-
-std::vector<Text> createLauncherTextMarkers(Font* MyFont)
-{
-	std::vector<Text> texts;
-
 	Text slow;
 	slow.setFont(*MyFont);
 	slow.setString("Slow");
@@ -496,6 +489,17 @@ std::vector<Text> createLauncherTextMarkers(Font* MyFont)
 	fast.setFillColor(sf::Color::Yellow);
 	fast.setPosition(755.f, 890.f);
 
+	texts.push_back(launch_setting);
+	texts.push_back(launches_left);
+	texts.push_back(launches_display);
+	texts.push_back(setting_display);
+	texts.push_back(game_rules);
+	texts.push_back(titleshadow);
+	texts.push_back(title);
+	texts.push_back(scoreshadow);
+	texts.push_back(score);
+	texts.push_back(score_counter);
+	texts.push_back(test_case_description);
 	texts.push_back(slow);
 	texts.push_back(medium);
 	texts.push_back(fast);
@@ -503,19 +507,7 @@ std::vector<Text> createLauncherTextMarkers(Font* MyFont)
 	return texts;
 }
 
-std::vector<ConvexShape> LauncherSettingsLines()
-{
-	std::vector<ConvexShape> Objects;
-	ConvexRect* slow_marker = new ConvexRect(800, 830, 10, 30, 0,Color::Cyan);
-	ConvexRect* medium_marker = new ConvexRect(800, 860, 10, 25, 0, Color::Magenta);
-	ConvexRect* fast_marker = new ConvexRect(800, 885, 10, 20, 0, Color::Yellow);
-
-	Objects.push_back(slow_marker->getShape());
-	Objects.push_back(medium_marker->getShape());
-	Objects.push_back(fast_marker->getShape());
-	return Objects;
-}
-
+// sets the given score to the score text
 void update_score(RenderWindow* window, Text* score_counter, int score_count)
 {
 	score_counter->setString(std::to_string(score_count));

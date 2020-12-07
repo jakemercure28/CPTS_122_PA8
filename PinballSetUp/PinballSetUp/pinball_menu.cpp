@@ -2,13 +2,16 @@
 
 int menu(RenderWindow* window)
 {
+	// holds mouse position when left mouse is clicked
 	int user_choice = 0;
 
+	// until user selects a valid location while loop will not be exited
 	while (user_choice == 0)
 	{
 		drawMenu(window);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			// function polls the location of the users mouse and returns an integer related to the menu choice selection.
 			user_choice = check_mouse_pos(sf::Mouse::getPosition(*window));
 		}
 	}
@@ -18,6 +21,7 @@ int menu(RenderWindow* window)
 
 void drawMenu(RenderWindow* window)
 {
+	// all menu objects are created and drawn in this function 
 
 	RectangleShape outerbox(Vector2f(450, 750));
 	outerbox.setPosition(250, 75);
