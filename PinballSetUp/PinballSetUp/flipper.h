@@ -15,16 +15,16 @@ private:
 	Sound clack_sound;
 
 public:
-
+	// constructor
 	flipper(float initX, float initY, float initRot,bool direction);
+	// getters
 	Vector2f getposition();
 	ConvexShape getShape();
 	float getRotation();
-
+	// member functions
 	void rotateUp();
 	void rotateDown();
 	void rotateFlipper(bool);
-	void update();
 
 
 };
