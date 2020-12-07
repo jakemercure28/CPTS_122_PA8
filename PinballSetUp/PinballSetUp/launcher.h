@@ -10,12 +10,16 @@ class launcher
 private:
 	Vector2f position;
 	ConvexShape launcherShape;
+	// holds how far back the launcher has been pulled for force calculations
 	float pullback;
 
 public:
+	// Constructor
 	launcher(float initX, float initY);
+	// getters
 	Vector2f getposition();
 	ConvexShape getShape();
+	// member functions
 	int moveLauncher(bool upDown, int* max_pull_back);
 	int moveLauncher_slow();
 	int moveLauncher_medium();
