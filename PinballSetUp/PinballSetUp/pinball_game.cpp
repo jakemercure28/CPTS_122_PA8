@@ -11,7 +11,14 @@ int play_game(RenderWindow* window, int testcase)
 
 
 	// play opening sound
-	opening_sound.init();
+	switch (testcase)
+	{
+	case 4:
+		break;
+	default:
+		opening_sound.init();
+		break;
+	}
 
 	// Game state variables
 	int user_choice = 0;
@@ -70,6 +77,14 @@ int play_game(RenderWindow* window, int testcase)
 		launches = 1;
 		textObjects[10].setString("Test Case 3:\nAutomatic launch at fast speed, manual flipper action. Only 1 launch for test cases.");
 		break;
+	case 4:
+		launches = 1;
+		textObjects[10].setString("Test Case 4:\nNo AUDIO, Manual launch, manual flipper action. Only 1 launch for test cases.");
+		break;
+	case 5:
+		launches = 1;
+		textObjects[10].setString("Test Case 5:\nAUDIO INCLUDED, Manual launch, manual flipper action. Only 1 launch for test cases.");
+		break;
 	default:
 		launches = 3;
 		break;
@@ -85,14 +100,28 @@ int play_game(RenderWindow* window, int testcase)
 		if (Keyboard::isKeyPressed(Keyboard::A))
 		{
 			leftFlipper->rotateFlipper(true);
-			clack_sound.init();
+			switch (testcase)
+			{
+			case 4:
+				break;
+			default:
+				clack_sound.init();
+				break;
+			}
 		}
 		else leftFlipper->rotateFlipper(false);
 
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 			rightFlipper->rotateFlipper(true);
-			clack_sound.init();
+			switch (testcase)
+			{
+			case 4:
+				break;
+			default:
+				clack_sound.init();
+				break;
+			}
 		}
 		else rightFlipper->rotateFlipper(false);
 
@@ -117,7 +146,14 @@ int play_game(RenderWindow* window, int testcase)
 				if (Keyboard::isKeyPressed(Keyboard::Space))
 				{
 					if_launch = ballLauncher->moveLauncher(true, &max_pull_back);
-					launcher_sound.init();
+					switch (testcase)
+					{
+					case 4:
+						break;
+					default:
+						launcher_sound.init();
+						break;
+					}
 				}
 				else if_launch = ballLauncher->moveLauncher(false, &max_pull_back);
 
@@ -164,7 +200,15 @@ int play_game(RenderWindow* window, int testcase)
 
 			if ((pinball->getposition().y) > 900) {
 				launches--;
-				ball_drop_sound.init();
+				switch (testcase)
+				{
+				case 4:
+					break;
+				default:
+					ball_drop_sound.init();
+					break;
+				}
+
 				pinball = new ball(825, 770);
 				flag = 0;
 			}
