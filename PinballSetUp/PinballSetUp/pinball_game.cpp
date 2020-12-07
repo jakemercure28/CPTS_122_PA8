@@ -47,6 +47,10 @@ int play_game(RenderWindow* window, int testcase)
 	std::vector<ConvexShape> collidableObjects = createCollidableObject();
 	//create text Objects
 	std::vector<Text> textObjects = createTextObjects(&MyFont);
+	//create launcher objects
+	std::vector<ConvexShape>launcher_setting_lines = LauncherSettingsLines();
+	//create launcher settings text
+	std::vector<Text> launcherSidetext = createLauncherTextMarkers(&MyFont);
 
 	//create collidable moving objects
 	FloatRect* boundary = new FloatRect(0, 0, window->getSize().x, window->getSize().y);
@@ -220,6 +224,11 @@ int play_game(RenderWindow* window, int testcase)
 			window->draw(collidableObjects[i]);
 		for (int j = 0; j < textObjects.size();j++)
 			window->draw(textObjects[j]);
+		for (int k = 0; k < launcher_setting_lines.size(); k++)
+			window->draw(launcher_setting_lines[k]);
+		for (int l = 0; l < launcherSidetext.size(); l++)
+			window->draw(launcherSidetext[l]);
+		
 
 		window->draw(pinball->getShape());
 		window->draw(leftFlipper->getShape());
@@ -460,6 +469,51 @@ std::vector<Text> createTextObjects(Font* MyFont)
 
 
 	return texts;
+}
+
+std::vector<Text> createLauncherTextMarkers(Font* MyFont)
+{
+	std::vector<Text> texts;
+
+	Text slow;
+	slow.setFont(*MyFont);
+	slow.setString("Slow");
+	slow.setCharacterSize(15);
+	slow.setFillColor(sf::Color::Cyan);
+	slow.setPosition(755.f, 835.f);
+
+	Text medium;
+	medium.setFont(*MyFont);
+	medium.setString("Medium");
+	medium.setCharacterSize(15);
+	medium.setFillColor(sf::Color::Magenta);
+	medium.setPosition(740.f, 860.f);
+
+	Text fast;
+	fast.setFont(*MyFont);
+	fast.setString("Fast");
+	fast.setCharacterSize(15);
+	fast.setFillColor(sf::Color::Yellow);
+	fast.setPosition(755.f, 890.f);
+
+	texts.push_back(slow);
+	texts.push_back(medium);
+	texts.push_back(fast);
+
+	return texts;
+}
+
+std::vector<ConvexShape> LauncherSettingsLines()
+{
+	std::vector<ConvexShape> Objects;
+	ConvexRect* slow_marker = new ConvexRect(800, 830, 10, 30, 0,Color::Cyan);
+	ConvexRect* medium_marker = new ConvexRect(800, 860, 10, 25, 0, Color::Magenta);
+	ConvexRect* fast_marker = new ConvexRect(800, 885, 10, 20, 0, Color::Yellow);
+
+	Objects.push_back(slow_marker->getShape());
+	Objects.push_back(medium_marker->getShape());
+	Objects.push_back(fast_marker->getShape());
+	return Objects;
 }
 
 void update_score(RenderWindow* window, Text* score_counter, int score_count)

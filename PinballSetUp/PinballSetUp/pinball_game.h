@@ -19,6 +19,8 @@ void setLaunches(Text*, int);
 void setSetting(ball*,Text*, int);
 std::vector<ConvexShape> createCollidableObject();
 std::vector<Text> createTextObjects(Font*);
+std::vector<ConvexShape> LauncherSettingsLines();
+std::vector<Text> createLauncherTextMarkers(Font* MyFont);
 void update_score(RenderWindow* window, Text* score_counter, int score_count);
 
 #endif
