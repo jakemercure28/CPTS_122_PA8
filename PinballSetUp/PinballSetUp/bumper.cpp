@@ -1,5 +1,9 @@
 #include "bumper.h"
 
+//Description: This is the .cpp (source) file for the bumper class, which contains the definitions of
+//the functionalities used to create the circular bumpers in our game
+
+//this is the constructor for our class
 bumper::bumper(float initX, float initY)
 {
 	position.x = initX;
@@ -13,11 +17,13 @@ bumper::bumper(float initX, float initY)
 	
 }
 
+//this function returns the position vector of the bumper
 Vector2f bumper::getposition()
 {
 	return position;
 }
 
+//this function returns the CircleShape bumper object
 CircleShape bumper::getShape()
 {
 	return circle_shape;
