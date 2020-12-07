@@ -4,6 +4,7 @@
 //definition of the functionalities used to create the band bumpers in our game
 
 //constructor that creates a band_bumper object
+//inputs are for the position, rotation, and activity of the bumper
 band_bumper::band_bumper(float initX, float initY, float initRotation, bool active)
 {
 	position.x = initX;
